@@ -48,9 +48,14 @@
                         <i id="theme-toggle-icon" class="fas fa-moon text-gray-600 dark:text-gray-300"></i>
                     </button>
                 </div>
-                <button class="md:hidden" id="menu-btn">
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
+                <div class="flex items-center space-x-3 md:hidden">
+                    <button id="dark-mode-toggle-mobile" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <i id="theme-toggle-icon-mobile" class="fas fa-moon text-gray-600 dark:text-gray-300"></i>
+                    </button>
+                    <button id="menu-btn">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
             </div>
         </div>
         <div id="mobile-menu" class="md:hidden hidden fixed inset-0 bg-black bg-opacity-50 z-50">
@@ -646,22 +651,31 @@
     <script>
         const themeToggleBtn = document.getElementById('dark-mode-toggle');
         const themeToggleIcon = document.getElementById('theme-toggle-icon');
+        const themeToggleBtnMobile = document.getElementById('dark-mode-toggle-mobile');
+        const themeToggleIconMobile = document.getElementById('theme-toggle-icon-mobile');
         
         function updateThemeToggle() {
             if (document.documentElement.classList.contains('dark')) {
                 themeToggleIcon.classList.remove('fa-moon');
                 themeToggleIcon.classList.add('fa-sun');
+                themeToggleIconMobile.classList.remove('fa-moon');
+                themeToggleIconMobile.classList.add('fa-sun');
             } else {
                 themeToggleIcon.classList.remove('fa-sun');
                 themeToggleIcon.classList.add('fa-moon');
+                themeToggleIconMobile.classList.remove('fa-sun');
+                themeToggleIconMobile.classList.add('fa-moon');
             }
         }
 
-        themeToggleBtn.addEventListener('click', function() {
+        function toggleTheme() {
             document.documentElement.classList.toggle('dark');
             localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
             updateThemeToggle();
-        });
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggleBtnMobile.addEventListener('click', toggleTheme);
 
         updateThemeToggle();
 
