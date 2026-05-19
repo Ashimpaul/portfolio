@@ -5,6 +5,100 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
+/* Mobile optimizations - Shorter and premium */
+@media (max-width: 768px) {
+    /* Reduce section padding */
+    section {
+        padding-top: 3rem !important;
+        padding-bottom: 3rem !important;
+    }
+    
+    /* Smaller hero section */
+    #home {
+        min-height: auto !important;
+        padding-top: 5rem !important;
+        padding-bottom: 3rem !important;
+    }
+    
+    /* Smaller profile picture */
+    .profile-picture {
+        width: 140px !important;
+        height: 140px !important;
+    }
+    
+    /* Smaller headings */
+    #home h1 {
+        font-size: 2rem !important;
+    }
+    
+    #home h2 {
+        font-size: 1.1rem !important;
+    }
+    
+    /* Compact cards */
+    section .bg-white,
+    section .bg-gray-50 {
+        padding: 1.25rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Smaller section headings */
+    section h2 {
+        font-size: 1.75rem !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    /* Tighter spacing */
+    .space-y-6 > * + * {
+        margin-top: 1rem !important;
+    }
+    
+    /* Premium compact buttons */
+    .inline-flex {
+        padding: 0.625rem 1.25rem !important;
+        font-size: 0.9375rem !important;
+    }
+    
+    /* Smaller social icons */
+    .text-3xl {
+        font-size: 1.875rem !important;
+    }
+    
+    /* Compact skill tags */
+    section .bg-blue-100,
+    section .bg-blue-900 {
+        padding: 0.375rem 0.75rem !important;
+        font-size: 0.875rem !important;
+    }
+    
+    /* Typing animation optimization */
+    .typing-text {
+        animation: typing 2.5s steps(30, end), blink-caret 0.75s step-end infinite;
+    }
+    
+    /* Premium card borders for mobile */
+    section .border-l-4 {
+        border-left-width: 3px !important;
+    }
+    
+    /* Reduce paragraph line height */
+    p {
+        line-height: 1.5 !important;
+    }
+}
+
+/* Premium styling enhancements */
+section .bg-white,
+section .bg-gray-50 {
+    border-radius: 1rem !important;
+    backdrop-filter: blur(10px);
+}
+
+/* Premium gradient borders */
+section .border-l-4 {
+    border-image: linear-gradient(to bottom, currentColor, transparent) 1;
+}
+
 /* Particle background */
 #particles {
     position: absolute;
