@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashim Paul - Portfolio | Networking, DBMS, BMS & Web Development</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#1e293b',
+                        success: '#059669',
+                        warning: '#d97706'
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+    <nav class="fixed w-full bg-white dark:bg-gray-800 shadow-md z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="#home" class="text-2xl font-bold text-primary">AP</a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#about" class="hover:text-primary">About</a>
+                    <a href="#skills" class="hover:text-primary">Skills</a>
+                    <a href="#experience" class="hover:text-primary">Experience</a>
+                    <a href="#projects" class="hover:text-primary">Projects</a>
+                    <a href="#achievements" class="hover:text-primary">Achievements</a>
+                    <a href="#certificates" class="hover:text-primary">Certificates</a>
+                    <a href="#resume" class="hover:text-primary">Resume</a>
+                    <a href="#contact" class="hover:text-primary">Contact</a>
+                    <button id="dark-mode-toggle" class="ml-2 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <i id="theme-toggle-icon" class="fas fa-moon text-gray-600 dark:text-gray-300"></i>
+                    </button>
+                </div>
+                <button class="md:hidden" id="menu-btn">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden fixed inset-0 bg-black bg-opacity-50 z-50">
+            <div class="bg-white dark:bg-gray-800 w-64 h-full p-6">
+                <button id="close-menu" class="absolute top-4 right-4 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <nav class="mt-12">
+                    <ul class="space-y-4">
+                        <li><a href="#home" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Home</a></li>
+                        <li><a href="#about" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">About</a></li>
+                        <li><a href="#skills" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Skills</a></li>
+                        <li><a href="#experience" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Experience</a></li>
+                        <li><a href="#projects" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Projects</a></li>
+                        <li><a href="#achievements" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Achievements</a></li>
+                        <li><a href="#certificates" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Certificates</a></li>
+                        <li><a href="#resume" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Resume</a></li>
+                        <li><a href="#contact" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="min-h-screen flex items-center pt-16 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
+        <div id="particles"></div>
+        <div class="container mx-auto px-4 py-16 relative z-10">
+            <div class="text-center fade-in">
+                <img src="Ashim paul image.jpeg" alt="Ashim Paul" class="profile-picture mx-auto mb-8 glow">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Ashim Paul</h1>
+                <div class="inline-block">
+                    <h2 class="text-xl md:text-2xl text-gray-600 mb-6 typing-text">Networking | DBMS | BMS | Web Development | Data Science</h2>
+                </div>
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto mb-8">
+                    Experienced Site Engineer, CS Teacher & Full-Stack Developer with expertise in Building Management Systems (BMS), 
+                    Networking, Database Management (DBMS), and Web Development. Proven track record in system reliability, 
+                    preventive maintenance, and delivering production-ready applications.
+                </p>
+                
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <a href="https://wa.me/919612963394" target="_blank" class="bg-success text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300 inline-flex items-center">
+                        <i class="fab fa-whatsapp mr-2"></i>WhatsApp
+                    </a>
+                    <a href="tel:+919612963394" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 inline-flex items-center">
+                        <i class="fas fa-phone mr-2"></i>Call Me
+                    </a>
+                    <a href="mailto:ashimpaul308@gmail.com" class="bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition duration-300 inline-flex items-center">
+                        <i class="fas fa-envelope mr-2"></i>Email
+                    </a>
+                </div>
+
+                <div class="flex justify-center space-x-4 mb-6">
+                    <a href="https://linkedin.com/in/ashim-paul" target="_blank" class="text-primary hover:text-blue-700">
+                        <i class="fab fa-linkedin text-3xl"></i>
+                    </a>
+                    <a href="https://github.com/Ashimpaul" target="_blank" class="text-primary hover:text-blue-700">
+                        <i class="fab fa-github text-3xl"></i>
+                    </a>
+                </div>
+                
+                <div class="text-center">
+                    <a href="Ashim_paul_resume.pdf" download class="bg-primary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-300 inline-flex items-center">
+                        <i class="fas fa-download mr-2"></i>Download Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">About Me</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold mb-4">Education</h3>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
+                        <h4 class="text-gray-600 dark:text-gray-300 font-medium">B.Tech in Computer Science & Engineering</h4>
+                        <p class="text-gray-600 dark:text-gray-300">Nagaland University (July 2020 – June 2024)</p>
+                        <p class="text-gray-600 dark:text-gray-300">GPA: 7.48</p>
+                        <p class="text-gray-600 dark:text-gray-300 mt-2">Courses: Object Oriented Programming, Operating Systems, Data Structures and Algorithms, Machine Learning, Networking, Database Management System, Real Time System</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Languages Known</h3>
+                    <div class="flex space-x-4">
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Hindi</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">English</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Bengali</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Key Skills</h2>
+            
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-center mb-6 text-primary">Areas of Expertise</h3>
+                <div class="grid md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md text-center border-2 border-primary">
+                        <i class="fas fa-network-wired text-3xl text-primary mb-2"></i>
+                        <h4 class="font-semibold">Networking</h4>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md text-center border-2 border-warning">
+                        <i class="fas fa-database text-3xl text-warning mb-2"></i>
+                        <h4 class="font-semibold">DBMS</h4>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md text-center border-2 border-success">
+                        <i class="fas fa-building text-3xl text-success mb-2"></i>
+                        <h4 class="font-semibold">BMS Systems</h4>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md text-center border-2 border-purple-600">
+                        <i class="fas fa-code text-3xl text-purple-600 mb-2"></i>
+                        <h4 class="font-semibold">Web Development</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Programming</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Python</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">C</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">C++</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">JavaScript</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">PHP</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">SQL</span>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Networking & Systems</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">IP Addressing</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Subnetting</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">LAN/WAN</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Routing Basics</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Network Security</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Router/Switch Setup</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">CCTV</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">PA Systems</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">BMS Systems</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Biometric</span>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Web Development</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">HTML</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">CSS</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Bootstrap</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Tailwind</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Laravel</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">REST APIs</span>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Data Science & ML</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Pandas</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Scikit-learn</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">TensorFlow</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">NLP</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Matplotlib</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Predictive Modeling</span>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Tools & Platforms</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Git</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">VS Code</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">PowerBI</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Jupyter</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Excel</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Linux</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Windows</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Wireshark (Basics)</span>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Soft Skills</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Leadership</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Event Management</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Writing</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Public Speaking</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="py-20 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Professional Experience</h2>
+            <div class="max-w-4xl mx-auto space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-success">
+                    <div class="flex flex-wrap justify-between items-start mb-2">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Site Engineer</h3>
+                        <span class="text-gray-600 dark:text-gray-400">April 1, 2026 – Present</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-2 font-medium">Honeywell Automation India Limited (Onsite)</p>
+                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
+                        <li>Perform regular site inspections to identify safety hazards, ensure compliance with standards, and monitor Building Management Systems (BMS) operations</li>
+                        <li>Developed and implemented preventive maintenance strategies, resulting in a <strong class="text-success">15% improvement in equipment reliability</strong> and a <strong class="text-success">10% reduction in downtime</strong></li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-primary">
+                    <div class="flex flex-wrap justify-between items-start mb-2">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">CS Teacher</h3>
+                        <span class="text-gray-600 dark:text-gray-400">June 22, 2025 – March 26, 2026</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-2 font-medium">KV NIT Silchar (Onsite)</p>
+                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
+                        <li>Teaching Computer Science including Networking concepts (IP addressing, protocols, OSI model) to higher secondary students</li>
+                        <li>Maintained lab infrastructure, including routers, Ethernet networks, and system connectivity</li>
+                        <li>Managed setup and monitoring of CCTV, PA systems, and campus surveillance networks</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-purple-600">
+                    <div class="flex flex-wrap justify-between items-start mb-2">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Startup - Naga Connect (Project Intern)</h3>
+                        <span class="text-gray-600 dark:text-gray-400">Oct 10, 2024 – Feb 28, 2025</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-2 font-medium">Nagaland University (Hybrid)</p>
+                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
+                        <li>Assisted in installation and configuration of IP-based CCTV systems including NVR setup and camera connectivity</li>
+                        <li>Worked on local network setup including IP addressing, device connectivity, and basic troubleshooting</li>
+                        <li>Supported testing and configuration of wireless devices and surveillance systems for stable network performance</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-warning">
+                    <div class="flex flex-wrap justify-between items-start mb-2">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">PHP Developer Intern</h3>
+                        <span class="text-gray-600 dark:text-gray-400">July 8, 2024 – Oct 8, 2024</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-2 font-medium">Yellowberry Technology (Hybrid)</p>
+                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
+                        <li>Developed Laravel-based applications improving performance and user experience</li>
+                        <li>Worked with server deployment, hosting environments, and backend optimization</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-purple-600">
+                    <div class="flex flex-wrap justify-between items-start mb-2">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Data Science Intern</h3>
+                        <span class="text-gray-600 dark:text-gray-400">Dec 2022 – Jan 2023</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-2 font-medium">Ardent Computech</p>
+                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
+                        <li>Built Walmart sales forecasting model with Scikit-learn</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Featured Projects</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-chart-line text-3xl text-primary mr-3"></i>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Walmart Sales Data Analysis</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Built ML model improving forecast accuracy by <strong class="text-primary">15%</strong> using Python and Scikit-learn; handled structured datasets and optimized data processing workflows</p>
+                    <a href="https://github.com/Ashimpaul/Walmart-Sales-Analysis-Using-Machine-Learning" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                        <i class="fab fa-github mr-1"></i>View on GitHub
+                    </a>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-graduation-cap text-3xl text-success mr-3"></i>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Smart Tutoring System</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Developed NLP-based personalized learning system; integrated edge computing concepts for low-latency responses and designed database using DBMS concepts; won <strong class="text-success">Best Paper Award (BITMDM-2024)</strong></p>
+                    <a href="https://github.com/Ashimpaul/Smart-Tutoring-System" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                        <i class="fab fa-github mr-1"></i>View on GitHub
+                    </a>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-envelope text-3xl text-warning mr-3"></i>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Email Spam Detection</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Achieved <strong class="text-warning">95% accuracy</strong> using TF-IDF and Logistic Regression; implemented efficient data flow and preprocessing pipeline</p>
+                    <a href="https://github.com/Ashimpaul/Email-spam-detection" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                        <i class="fab fa-github mr-1"></i>View on GitHub
+                    </a>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-heartbeat text-3xl text-red-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">AI Health Assistant</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">AI/ML powered health assistant application</p>
+                    <a href="https://github.com/Ashimpaul/AI-health-Assistant" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                        <i class="fab fa-github mr-1"></i>View on GitHub
+                    </a>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-utensils text-3xl text-orange-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Zomato Data Analysis</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Comprehensive data analysis project</p>
+                    <a href="https://github.com/Ashimpaul/Zomato-Data-Analysis" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                        <i class="fab fa-github mr-1"></i>View on GitHub
+                    </a>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-shopping-cart text-3xl text-purple-600 mr-3"></i>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Micro Store</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">Laravel E-commerce application</p>
+                    <a href="https://ashimpaul.github.io/micro-app/" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                        <i class="fas fa-external-link-alt mr-1"></i>Live Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements" class="py-20 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Achievements & Publications</h2>
+            <div class="max-w-4xl mx-auto space-y-6">
+                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-success">
+                    <h3 class="text-xl text-blue-600 dark:text-blue-400 mb-2"><i class="fas fa-trophy mr-2"></i>Best Paper Award at BITMDM 2024</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-2">Awarded 'Best Paper' at the BITMDM-2024 international conference for publishing and presenting research on an AI-driven 'Intelligent Tutoring System' that leverages Natural Language Processing (NLP) for personalized learning.</p>
+                    <a href="https://www.linkedin.com/posts/ashim-paul-_bitmdm2024-activity-7271291500355829761-7LE3?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEHZS0gBpNS-nQ0fDeLVdlQz3NzWI7j-O6g" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                        <i class="fas fa-external-link-alt mr-1"></i>View Post
+                    </a>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-primary">
+                    <h3 class="text-xl text-blue-600 dark:text-blue-400 mb-2"><i class="fas fa-book mr-2"></i>Published Paper</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-2">Recommendation System to Assist Learner: Intelligent Tutoring System</p>
+                    <a href="https://link.springer.com/chapter/10.1007/978-3-031-82706-8_24" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                        <i class="fas fa-external-link-alt mr-1"></i>Springer Link
+                    </a>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-purple-600">
+                    <h3 class="text-xl text-blue-600 dark:text-blue-400 mb-2"><i class="fas fa-calendar-check mr-2"></i>Event Coordinator</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Led the successful organization of Techaura 2023, overseeing technical and creative events such as Code War, Code Chef, and fine arts competitions. Managed event logistics, coordinated with multiple teams, and enhanced participation engagement by 30%.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="certificates" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Certifications</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <a href="https://drive.google.com/file/d/1DA_2pa6w3vjApPEp1Q4XxjlDdM54lXbM/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
+                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Industrial Internship Certificate on Data Science and AI</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-3">Ardent Computech Pvt. Ltd.</p>
+                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
+                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
+                        </span>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/file/d/1eIgfMuWR0_3SvR8AwJN4ynoPGrMpFksK/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
+                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Experience/Internship Certificate</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-3">Naga Connect</p>
+                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
+                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
+                        </span>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/file/d/1lgC-cJ2PqTl_1zqng3xt-oa-js3-r0F9/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
+                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Experience/Internship Certificate</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-3">Yellow Berry Technology</p>
+                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
+                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
+                        </span>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/file/d/1DIOri6fASw0M6cLYWdx9IcYlAEFQVjqI/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
+                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Full Stack Web Development</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-3">NIELIT</p>
+                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
+                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
+                        </span>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/file/d/1DETVePERmeZqV6YKRRrwKX6rXD5lyy2M/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
+                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">SEBI - Investor Certification Examination</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-3">SEBI</p>
+                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
+                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
+                        </span>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/file/d/1EpbzxoMg3a--WcmBxF-j55ydYMB5Tqm6/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
+                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">HP LIFE - Data Science & Analytics</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-3">HP LIFE</p>
+                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
+                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
+                        </span>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/file/d/1Vv2Z9Of-e1FiVG_yPXGIAoADZXY_FRja/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
+                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Tech Saksham - AI</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-3">Transformative Learning with TechSaksham & Analytics</p>
+                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
+                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
+                        </span>
+                    </div>
+                </a>
+
+                <a href="https://drive.google.com/file/d/1hA48UiBH1g1VP0bukH2EyDQP4dCr0zNe/view?usp=sharing" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
+                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Google Data Analysis</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-3">Process Data from Dirty to Clean & Analytics</p>
+                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
+                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
+                        </span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="resume" class="py-20 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Resume</h2>
+            <div class="max-w-4xl mx-auto text-center">
+                <p class="text-gray-700 dark:text-gray-300 mb-6">Download my complete resume for detailed information</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="Ashim_paul_resume.pdf" download class="bg-primary text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-300 inline-flex items-center text-lg">
+                        <i class="fas fa-download mr-2"></i>Download Resume PDF
+                    </a>
+                    <a href="https://wa.me/919612963394" target="_blank" class="bg-success text-white px-8 py-3 rounded-lg hover:bg-green-700 transition duration-300 inline-flex items-center text-lg">
+                        <i class="fab fa-whatsapp mr-2"></i>Contact on WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Get In Touch</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6">Contact Information</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-center">
+                            <div class="bg-primary text-white p-3 rounded-full mr-4">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">Phone</p>
+                                <a href="tel:+919612963394" class="text-gray-900 dark:text-gray-100 font-medium hover:text-primary">+91-9612963394</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="bg-success text-white p-3 rounded-full mr-4">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">WhatsApp</p>
+                                <a href="https://wa.me/919612963394" target="_blank" class="text-gray-900 dark:text-gray-100 font-medium hover:text-success">Chat on WhatsApp</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="bg-gray-700 text-white p-3 rounded-full mr-4">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">Email</p>
+                                <a href="mailto:ashimpaul308@gmail.com" class="text-gray-900 dark:text-gray-100 font-medium hover:text-primary">ashimpaul308@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="bg-blue-700 text-white p-3 rounded-full mr-4">
+                                <i class="fab fa-linkedin"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">LinkedIn</p>
+                                <a href="https://linkedin.com/in/ashim-paul" target="_blank" class="text-gray-900 dark:text-gray-100 font-medium hover:text-blue-700">linkedin.com/in/ashim-paul</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6">Send a Message</h3>
+                    <form id="contactForm" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-gray-700 dark:text-gray-300 mb-2">Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" required>
+                        </div>
+                        <div>
+                            <label for="phone_number" class="block text-gray-700 dark:text-gray-300 mb-2">Phone Number</label>
+                            <input type="tel" id="phone_number" name="phone_number" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" required>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" required></textarea>
+                        </div>
+                        <div id="responseMessage" class="hidden text-center py-2 rounded"></div>
+                        <button type="submit" class="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-300 font-medium">
+                            <i class="fas fa-paper-plane mr-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white dark:bg-gray-800 py-6 border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://linkedin.com/in/ashim-paul" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-primary">
+                    <i class="fab fa-linkedin text-xl"></i>
+                </a>
+                <a href="https://github.com/Ashimpaul" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-primary">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+                <a href="mailto:ashimpaul308@gmail.com" class="text-gray-600 dark:text-gray-400 hover:text-primary">
+                    <i class="fas fa-envelope text-xl"></i>
+                </a>
+                <a href="https://wa.me/919612963394" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-success">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                </a>
+            </div>
+            <p class="text-gray-600 dark:text-gray-400">&copy; 2026 Ashim Paul. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggleBtn = document.getElementById('dark-mode-toggle');
+        const themeToggleIcon = document.getElementById('theme-toggle-icon');
+        
+        function updateThemeToggle() {
+            if (document.documentElement.classList.contains('dark')) {
+                themeToggleIcon.classList.remove('fa-moon');
+                themeToggleIcon.classList.add('fa-sun');
+            } else {
+                themeToggleIcon.classList.remove('fa-sun');
+                themeToggleIcon.classList.add('fa-moon');
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            updateThemeToggle();
+        });
+
+        updateThemeToggle();
+
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMenu = document.getElementById('close-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        closeMenu.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+
+        const mobileLinks = mobileMenu.getElementsByTagName('a');
+        Array.from(mobileLinks).forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            section.classList.add('transition', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let phone_number = document.getElementById("phone_number").value;
+            let message = document.getElementById("message").value;
+
+            let formData = new FormData();
+            formData.append("name", name);
+            formData.append("email", email);
+            formData.append("phone_number", phone_number);
+            formData.append("message", message);
+
+            fetch("https://formsubmit.co/ajax/ashimpaul308@gmail.com", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                let responseMessage = document.getElementById("responseMessage");
+                responseMessage.classList.remove('hidden');
+                responseMessage.textContent = "Message sent successfully!";
+                responseMessage.style.color = "green";
+                
+                document.getElementById("contactForm").reset();
+
+                setTimeout(() => {
+                    responseMessage.classList.add('hidden');
+                }, 3000);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                let responseMessage = document.getElementById("responseMessage");
+                responseMessage.classList.remove('hidden');
+                responseMessage.textContent = "Failed to send message. Please try again.";
+                responseMessage.style.color = "red";
+            });
+        });
+
+        // Particle background
+        function createParticles() {
+            const container = document.getElementById('particles');
+            if (!container) return;
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Scroll indicator
+        function createScrollIndicator() {
+            const indicator = document.createElement('div');
+            indicator.classList.add('scroll-indicator');
+            document.body.appendChild(indicator);
+            
+            window.addEventListener('scroll', () => {
+                const scrollTop = document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollPercent = (scrollTop / scrollHeight) * 100;
+                indicator.style.width = scrollPercent + '%';
+            });
+        }
+
+        // Smooth scroll reveal
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('section');
+            reveals.forEach((element, index) => {
+                element.style.transitionDelay = (index * 0.1) + 's';
+            });
+        }
+
+        // Initialize all animations
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            createScrollIndicator();
+            revealOnScroll();
+        });
+    </script>
+</body>
+</html>
