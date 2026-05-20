@@ -1,771 +1,1471 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ashim Paul - Portfolio | Networking, DBMS, BMS & Web Development</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1e40af',
-                        secondary: '#1e293b',
-                        success: '#059669',
-                        warning: '#d97706'
-                    }
-                }
-            }
-        }
-    </script>
-    <script>
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashim Paul — Network · Database · Development</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   ROOT VARIABLES — PCB / NETWORK DASHBOARD THEME
+═══════════════════════════════════════════════ */
+:root {
+  --bg:        #0C0E0F;
+  --panel:     #111416;
+  --panel2:    #161A1C;
+  --amber:     #F5A623;
+  --amber-dim: rgba(245,166,35,0.15);
+  --amber-glow:rgba(245,166,35,0.35);
+  --green:     #3DFF6E;
+  --green-dim: rgba(61,255,110,0.12);
+  --blue:      #38BDF8;
+  --blue-dim:  rgba(56,189,248,0.12);
+  --red:       #FF4560;
+  --text:      #D4C9B0;
+  --muted:     #5A6068;
+  --border:    rgba(245,166,35,0.18);
+  --trace:     rgba(245,166,35,0.08);
+}
+ 
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  cursor:none;
+}
+ 
+/* ── CUSTOM CURSOR ── */
+#cur{
+  position:fixed;width:10px;height:10px;
+  background:var(--amber);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 10px var(--amber-glow);
+  transition:width .15s,height .15s,background .15s;
+}
+#cur2{
+  position:fixed;width:32px;height:32px;
+  border:1px solid var(--amber);border-radius:2px;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%) rotate(45deg);
+  transition:all .1s ease;
+  opacity:.6;
+}
+body:has(a:hover) #cur,body:has(button:hover) #cur{width:18px;height:18px;background:var(--green);}
+body:has(a:hover) #cur2,body:has(button:hover) #cur2{border-color:var(--green);transform:translate(-50%,-50%) rotate(0deg);border-radius:50%;}
+ 
+/* ── PCB TRACE BACKGROUND ── */
+#pcb-canvas{position:fixed;inset:0;z-index:0;opacity:.35;pointer-events:none;}
+ 
+/* ── SCROLL PROGRESS ── */
+#sprog{
+  position:fixed;top:0;left:0;height:2px;
+  background:linear-gradient(90deg,var(--amber),var(--green));
+  z-index:10000;transition:width .08s;
+  box-shadow:0 0 6px var(--amber);
+}
+ 
+/* ── PACKET PING ANIMATION ── */
+@keyframes packet-travel{
+  0%{transform:translateX(-100vw);opacity:0;}
+  5%{opacity:1;}
+  95%{opacity:1;}
+  100%{transform:translateX(100vw);opacity:0;}
+}
+.packet-line{
+  position:fixed;top:var(--y);left:0;
+  width:80px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--amber),transparent);
+  animation:packet-travel var(--dur) var(--delay) infinite linear;
+  z-index:1;pointer-events:none;
+}
+ 
+/* ══════════════════
+   NAVIGATION
+══════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  background:rgba(12,14,15,.9);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:.9rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-id{
+  display:flex;align-items:center;gap:.75rem;
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem;letter-spacing:.15em;
+  color:var(--amber);text-decoration:none;
+  text-shadow:0 0 20px var(--amber-glow);
+}
+.nav-node{
+  width:8px;height:8px;background:var(--green);border-radius:50%;
+  box-shadow:0 0 8px var(--green);
+  animation:blink-node 2s ease-in-out infinite;
+}
+@keyframes blink-node{0%,100%{opacity:1}50%{opacity:.3}}
+.nav-ip{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.6rem;color:var(--muted);
+  letter-spacing:.08em;
+}
+.nav-links{
+  display:flex;gap:1.75rem;list-style:none;
+}
+.nav-links a{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;color:var(--muted);
+  text-decoration:none;letter-spacing:.12em;
+  text-transform:uppercase;
+  transition:color .2s;
+  display:flex;align-items:center;gap:.35rem;
+}
+.nav-links a::before{content:'[';color:var(--border);}
+.nav-links a::after{content:']';color:var(--border);}
+.nav-links a:hover{color:var(--amber);}
+.nav-status{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.58rem;color:var(--green);
+  letter-spacing:.1em;
+  display:flex;align-items:center;gap:.5rem;
+  border:1px solid rgba(61,255,110,.2);
+  padding:.3rem .7rem;
+}
+.nav-status::before{
+  content:'';width:6px;height:6px;background:var(--green);
+  border-radius:50%;box-shadow:0 0 6px var(--green);
+  animation:blink-node 1.5s infinite;
+}
+ 
+/* ══════════════════
+   HERO — NETWORK MAP
+══════════════════ */
+#hero{
+  position:relative;min-height:100vh;
+  display:grid;grid-template-columns:1fr 1.1fr;
+  align-items:center;gap:3rem;
+  padding:6rem 2.5rem 3rem;
+  z-index:2;overflow:hidden;
+}
+/* hexagonal clip pattern overlay */
+#hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    radial-gradient(circle at 60% 50%,rgba(245,166,35,.06) 0%,transparent 55%),
+    radial-gradient(circle at 20% 80%,rgba(61,255,110,.04) 0%,transparent 40%);
+  pointer-events:none;
+}
+ 
+.hero-left{position:relative;z-index:3;}
+.hero-breadcrumb{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;color:var(--muted);letter-spacing:.15em;
+  text-transform:uppercase;margin-bottom:1.25rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.hero-breadcrumb .sep{color:var(--amber);}
+.hero-breadcrumb .active{color:var(--amber);}
+ 
+h1.hero-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4rem,8vw,8rem);
+  letter-spacing:.05em;line-height:.9;
+  color:var(--text);
+  margin-bottom:.5rem;
+}
+h1.hero-name .stroke{
+  -webkit-text-stroke:1.5px var(--amber);
+  color:transparent;
+  display:block;
+  text-shadow:none;
+}
+h1.hero-name .filled{
+  color:var(--amber);
+  text-shadow:0 0 40px var(--amber-glow),0 0 80px rgba(245,166,35,.15);
+  display:block;
+}
+ 
+.hero-tagline{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;color:var(--blue);
+  letter-spacing:.12em;text-transform:uppercase;
+  margin:1.25rem 0;
+  display:flex;align-items:center;gap:.75rem;
+}
+.hero-tagline::before,
+.hero-tagline::after{content:'──';color:var(--muted);}
+ 
+.hero-desc{
+  font-size:1rem;line-height:1.85;
+  color:var(--muted);max-width:480px;
+  margin-bottom:2.5rem;
+}
+.hero-desc .hl{color:var(--text);font-weight:500;}
+ 
+/* ping stats row */
+.hero-ping-row{
+  display:flex;gap:1.5rem;margin-bottom:2.5rem;
+  flex-wrap:wrap;
+}
+.ping-stat{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;letter-spacing:.08em;
+  display:flex;align-items:center;gap:.4rem;
+}
+.ping-stat .label{color:var(--muted);}
+.ping-stat .val{color:var(--amber);}
+.ping-stat .unit{color:var(--muted);}
+ 
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+ 
+.btn-trace{
+  position:relative;overflow:hidden;
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.75rem 1.75rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.68rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;cursor:none;
+  background:var(--amber);color:var(--bg);
+  border:none;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  transition:all .25s;
+}
+.btn-trace::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.2) 50%,transparent 100%);
+  transform:translateX(-100%);transition:transform .4s;
+}
+.btn-trace:hover::after{transform:translateX(100%);}
+.btn-trace:hover{box-shadow:0 0 25px var(--amber-glow);}
+ 
+.btn-outline-trace{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.75rem 1.75rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.68rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;cursor:none;
+  background:transparent;color:var(--amber);
+  border:1px solid var(--amber);
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  transition:all .25s;
+}
+.btn-outline-trace:hover{background:var(--amber-dim);box-shadow:0 0 20px var(--amber-glow);}
+ 
+/* ── NETWORK TOPOLOGY CANVAS (right side) ── */
+.hero-right{position:relative;z-index:3;}
+#topology-canvas{
+  width:100%;height:480px;
+  display:block;
+}
+.topology-label{
+  position:absolute;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.55rem;color:var(--amber);
+  letter-spacing:.08em;text-transform:uppercase;
+  background:rgba(12,14,15,.85);
+  padding:.2rem .5rem;
+  border:1px solid var(--border);
+  pointer-events:none;
+  white-space:nowrap;
+}
+ 
+/* ══════════════════
+   SECTION CHROME
+══════════════════ */
+.sec-chrome{
+  display:flex;align-items:center;gap:1rem;
+  margin-bottom:.75rem;
+}
+.sec-chrome .line{flex:1;height:1px;background:var(--border);}
+.sec-chrome .label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.58rem;color:var(--amber);
+  letter-spacing:.2em;text-transform:uppercase;
+  display:flex;align-items:center;gap:.4rem;
+}
+.sec-chrome .label::before{content:'◆';font-size:.4rem;}
+ 
+.sec-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.2rem,4vw,3.8rem);
+  letter-spacing:.04em;line-height:1;
+  margin-bottom:2.5rem;
+}
+.sec-title .dim{
+  color:transparent;
+  -webkit-text-stroke:1px var(--muted);
+}
+ 
+/* ══════════════════
+   ABOUT — SQL SCHEMA STYLE
+══════════════════ */
+#about{
+  padding:5rem 2.5rem;
+  display:grid;grid-template-columns:1.1fr .9fr;
+  gap:4rem;align-items:start;
+  position:relative;z-index:2;
+}
+.about-body p{
+  font-size:.95rem;color:var(--muted);
+  line-height:1.9;margin-bottom:1.25rem;
+}
+.about-body strong{color:var(--text);font-weight:500;}
+.about-body .hl-green{color:var(--green);}
+.about-body .hl-blue{color:var(--blue);}
+.about-body .hl-amber{color:var(--amber);}
+ 
+/* DB TABLE CARD */
+.db-table{
+  background:var(--panel);
+  border:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.68rem;
+  overflow:hidden;
+  position:relative;
+}
+.db-table::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--amber),transparent);
+}
+.db-table-header{
+  background:var(--panel2);
+  padding:.65rem 1rem;
+  display:flex;align-items:center;gap:.5rem;
+  border-bottom:1px solid var(--border);
+  color:var(--amber);letter-spacing:.1em;
+  font-size:.65rem;
+}
+.db-table-header .icon{color:var(--muted);font-size:.5rem;}
+.db-row{
+  display:grid;grid-template-columns:140px 90px 1fr;
+  padding:.5rem 1rem;gap:.5rem;
+  border-bottom:1px solid rgba(245,166,35,.06);
+  transition:background .15s;
+  align-items:center;
+}
+.db-row:hover{background:var(--amber-dim);}
+.db-row:last-child{border-bottom:none;}
+.col-name{color:var(--text);}
+.col-type{color:var(--blue);font-size:.58rem;}
+.col-val{color:var(--green);word-break:break-word;line-height:1.4;}
+.db-table-footer{
+  padding:.5rem 1rem;
+  color:var(--muted);font-size:.55rem;letter-spacing:.08em;
+  background:var(--panel2);border-top:1px solid var(--border);
+}
+ 
+/* ══════════════════
+   SKILLS — NETWORK RACK
+══════════════════ */
+#skills{
+  padding:5rem 2.5rem;
+  background:var(--panel);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  position:relative;z-index:2;
+}
+.skills-rack{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);
+}
+.rack-unit{
+  background:var(--bg);padding:1.75rem;
+  position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.rack-unit:hover{background:var(--panel);}
+/* rack screw corners */
+.rack-unit::before,
+.rack-unit::after{
+  content:'◎';position:absolute;
+  font-size:.5rem;color:var(--muted);
+  opacity:.4;
+}
+.rack-unit::before{top:.5rem;left:.5rem;}
+.rack-unit::after{bottom:.5rem;right:.5rem;}
+.rack-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.5rem;color:var(--muted);
+  letter-spacing:.2em;margin-bottom:.75rem;
+  display:flex;align-items:center;gap:.4rem;
+}
+.rack-num::after{content:'';flex:1;height:1px;background:var(--border);}
+.rack-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem;letter-spacing:.1em;
+  color:var(--text);margin-bottom:1rem;
+}
+.rack-led{
+  width:6px;height:6px;border-radius:50%;
+  display:inline-block;margin-right:.3rem;
+  position:relative;top:-1px;
+}
+.led-amber{background:var(--amber);box-shadow:0 0 6px var(--amber);}
+.led-green{background:var(--green);box-shadow:0 0 6px var(--green);}
+.led-blue{background:var(--blue);box-shadow:0 0 6px var(--blue);}
+.skill-chips{display:flex;flex-wrap:wrap;gap:.35rem;}
+.chip{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.58rem;color:var(--muted);
+  border:1px solid rgba(90,96,104,.3);
+  padding:.25rem .55rem;letter-spacing:.05em;
+  transition:all .2s;
+  cursor:default;
+}
+.chip:hover{
+  color:var(--amber);
+  border-color:var(--amber);
+  background:var(--amber-dim);
+  box-shadow:0 0 8px var(--amber-glow);
+}
+ 
+/* ══════════════════
+   EXPERIENCE — ROUTING TABLE
+══════════════════ */
+#experience{
+  padding:5rem 2.5rem;
+  position:relative;z-index:2;
+}
+.route-table{
+  border:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;
+  overflow:hidden;
+}
+.route-table-head{
+  display:grid;
+  grid-template-columns:1fr 1.2fr 120px 100px;
+  padding:.65rem 1.25rem;gap:1rem;
+  background:var(--panel2);border-bottom:1px solid var(--border);
+  font-size:.58rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;
+}
+.route-row{
+  display:grid;
+  grid-template-columns:1fr 1.2fr 120px 100px;
+  padding:1.5rem 1.25rem;gap:1rem;
+  border-bottom:1px solid rgba(245,166,35,.06);
+  align-items:start;
+  transition:background .2s;
+  position:relative;
+}
+.route-row:hover{background:var(--amber-dim);}
+.route-row:last-child{border-bottom:none;}
+.route-row::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;width:3px;
+}
+.route-current::before{background:var(--green);box-shadow:2px 0 8px var(--green);}
+.route-prev::before{background:var(--amber);}
+.route-old::before{background:var(--muted);}
+.rt-dest{
+  font-size:.8rem;font-weight:500;color:var(--text);
+  line-height:1.3;
+}
+.rt-sub{font-size:.62rem;color:var(--amber);letter-spacing:.06em;margin-top:.25rem;}
+.rt-via{
+  font-size:.75rem;color:var(--muted);line-height:1.3;
+}
+.rt-via strong{color:var(--blue);font-weight:400;}
+.rt-metric{
+  font-size:.65rem;color:var(--muted);
+  display:flex;flex-direction:column;gap:.2rem;
+}
+.rt-metric .badge{
+  display:inline-block;
+  font-size:.5rem;letter-spacing:.08em;
+  padding:.15rem .4rem;
+}
+.badge-green{background:rgba(61,255,110,.1);color:var(--green);border:1px solid rgba(61,255,110,.2);}
+.badge-amber{background:var(--amber-dim);color:var(--amber);border:1px solid var(--border);}
+.badge-gray{background:rgba(90,96,104,.1);color:var(--muted);border:1px solid rgba(90,96,104,.2);}
+.rt-date{
+  font-size:.6rem;color:var(--muted);text-align:right;
+  line-height:1.6;
+}
+ 
+/* EXPERIENCE bullets */
+.exp-detail{
+  font-size:.78rem;color:var(--muted);line-height:1.7;
+  margin-top:.75rem;
+}
+.exp-detail li{
+  list-style:none;padding-left:1rem;position:relative;margin-bottom:.3rem;
+}
+.exp-detail li::before{
+  content:'▸';position:absolute;left:0;
+  color:var(--amber);font-size:.55rem;top:.3em;
+}
+.exp-detail strong{color:var(--green);}
+ 
+/* ══════════════════
+   PROJECTS — PACKET CARDS
+══════════════════ */
+#projects{
+  padding:5rem 2.5rem;
+  background:var(--panel);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  position:relative;z-index:2;
+}
+.projects-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);
+}
+.proj-card{
+  background:var(--bg);
+  padding:1.75rem;
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.proj-card:hover{background:rgba(245,166,35,.03);}
+/* packet header bar */
+.proj-packet{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.5rem;color:var(--muted);letter-spacing:.1em;
+  padding:.35rem .65rem;
+  background:var(--panel2);border:1px solid var(--border);
+  margin-bottom:1.25rem;display:flex;justify-content:space-between;
+  align-items:center;
+}
+.proj-packet .proto{color:var(--blue);}
+.proj-packet .size{color:var(--amber);}
+.proj-icon{font-size:1.75rem;margin-bottom:.75rem;}
+.proj-title{
+  font-family:'Outfit',sans-serif;
+  font-size:.95rem;font-weight:600;
+  color:var(--text);margin-bottom:.65rem;line-height:1.3;
+}
+.proj-desc{
+  font-size:.82rem;color:var(--muted);
+  line-height:1.7;flex:1;
+}
+.proj-desc strong{color:var(--green);}
+.proj-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:1.25rem;padding-top:1rem;
+  border-top:1px solid var(--border);
+}
+.proj-tags{display:flex;gap:.3rem;flex-wrap:wrap;}
+.proj-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.48rem;letter-spacing:.06em;
+  padding:.15rem .4rem;color:var(--amber);
+  border:1px solid var(--border);
+  background:var(--amber-dim);
+}
+.proj-link{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.58rem;color:var(--amber);
+  text-decoration:none;letter-spacing:.08em;
+  transition:color .2s;display:flex;align-items:center;gap:.25rem;
+}
+.proj-link:hover{color:var(--green);}
+ 
+/* ══════════════════
+   ACHIEVEMENTS
+══════════════════ */
+#achievements{
+  padding:5rem 2.5rem;
+  position:relative;z-index:2;
+}
+.ach-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+}
+.ach-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:2rem;
+  position:relative;overflow:hidden;
+  transition:border-color .3s,transform .3s;
+}
+.ach-card:hover{border-color:var(--amber);transform:translateY(-5px);}
+.ach-card::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--amber),var(--green));
+  transform:scaleX(0);transition:transform .4s;
+  transform-origin:left;
+}
+.ach-card:hover::after{transform:scaleX(1);}
+.ach-badge{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.5rem;letter-spacing:.12em;
+  padding:.25rem .6rem;
+  background:var(--amber-dim);color:var(--amber);
+  border:1px solid var(--border);
+  margin-bottom:1rem;
+}
+.ach-emoji{font-size:2rem;display:block;margin-bottom:.75rem;}
+.ach-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem;letter-spacing:.06em;
+  color:var(--amber);margin-bottom:.75rem;
+  line-height:1.2;
+}
+.ach-body{font-size:.82rem;color:var(--muted);line-height:1.7;}
+.ach-link{
+  display:inline-flex;align-items:center;gap:.35rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.58rem;color:var(--blue);
+  text-decoration:none;margin-top:.75rem;letter-spacing:.08em;
+  transition:color .2s;
+}
+.ach-link:hover{color:var(--amber);}
+ 
+/* ══════════════════
+   CERTIFICATIONS
+══════════════════ */
+#certificates{
+  padding:5rem 2.5rem;
+  background:var(--panel);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  position:relative;z-index:2;
+}
+.certs-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--border);border:1px solid var(--border);
+}
+.cert-card{
+  background:var(--bg);padding:1.5rem;
+  text-decoration:none;display:block;
+  transition:background .25s;
+  position:relative;overflow:hidden;
+}
+.cert-card:hover{background:var(--amber-dim);}
+.cert-card::before{
+  content:'CERT';
+  position:absolute;bottom:-1rem;right:-.5rem;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3.5rem;letter-spacing:.1em;
+  color:rgba(245,166,35,.04);line-height:1;
+  pointer-events:none;
+}
+.cert-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.5rem;color:var(--muted);letter-spacing:.15em;
+  margin-bottom:.65rem;
+}
+.cert-issuer{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.55rem;color:var(--amber);
+  letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:.5rem;
+}
+.cert-name{
+  font-size:.82rem;color:var(--text);
+  line-height:1.5;font-weight:500;margin-bottom:.75rem;
+}
+.cert-cta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.55rem;color:var(--muted);
+  display:flex;align-items:center;gap:.3rem;
+  transition:color .2s;
+}
+.cert-card:hover .cert-cta{color:var(--amber);}
+ 
+/* ══════════════════
+   CONTACT
+══════════════════ */
+#contact{
+  padding:7rem 2.5rem;
+  display:grid;grid-template-columns:1.1fr .9fr;
+  gap:4rem;align-items:center;
+  position:relative;z-index:2;
+}
+/* traceroute animation */
+.traceroute{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;line-height:2;
+  background:var(--panel);border:1px solid var(--border);
+  padding:1.5rem;margin-bottom:2rem;
+  position:relative;overflow:hidden;
+}
+.traceroute::before{
+  content:'TRACEROUTE ashim.paul → recruiter';
+  display:block;color:var(--muted);font-size:.58rem;
+  letter-spacing:.08em;margin-bottom:.75rem;
+  padding-bottom:.75rem;border-bottom:1px solid var(--border);
+}
+.tr-hop{display:flex;gap:1rem;align-items:center;}
+.tr-hop-num{color:var(--muted);width:1.5rem;text-align:right;font-size:.58rem;}
+.tr-hop-ms{color:var(--green);width:3.5rem;font-size:.62rem;}
+.tr-hop-addr{color:var(--text);}
+.tr-hop-addr .domain{color:var(--amber);}
+.tr-cursor-line{
+  display:flex;gap:1rem;align-items:center;margin-top:.25rem;
+}
+.tr-blink{
+  display:inline-block;width:6px;height:12px;
+  background:var(--amber);margin-left:.3rem;
+  animation:blink-cur .9s step-end infinite;
+  vertical-align:middle;
+}
+@keyframes blink-cur{0%,100%{opacity:1}50%{opacity:0}}
+ 
+.contact-links-list{display:flex;flex-direction:column;gap:.75rem;}
+.c-link{
+  display:flex;align-items:center;gap:1rem;
+  text-decoration:none;
+  padding:.85rem 1.25rem;
+  background:var(--panel);border:1px solid var(--border);
+  transition:all .25s;
+  position:relative;overflow:hidden;
+}
+.c-link::after{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:2px;background:var(--amber);
+  transform:scaleY(0);transition:transform .25s;
+}
+.c-link:hover{border-color:var(--amber);background:var(--amber-dim);transform:translateX(6px);}
+.c-link:hover::after{transform:scaleY(1);}
+.c-link-icon{
+  width:36px;height:36px;display:flex;align-items:center;
+  justify-content:center;background:var(--panel2);
+  border:1px solid var(--border);font-size:.9rem;flex-shrink:0;
+}
+.c-link-info{}
+.c-link-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.55rem;color:var(--muted);letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.c-link-val{font-size:.85rem;color:var(--text);margin-top:.15rem;font-weight:500;}
+ 
+.contact-right{}
+.contact-big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,6vw,6rem);
+  letter-spacing:.04em;line-height:.95;
+  margin-bottom:2rem;
+}
+.contact-big .outline{
+  -webkit-text-stroke:1px var(--amber);
+  color:transparent;display:block;
+}
+.contact-big .solid{color:var(--amber);display:block;text-shadow:0 0 40px var(--amber-glow);}
+ 
+.social-row{display:flex;gap:.75rem;margin-top:1.75rem;}
+.soc-btn{
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:.62rem;
+  font-weight:700;letter-spacing:.05em;
+  background:var(--panel);border:1px solid var(--border);
+  color:var(--muted);text-decoration:none;
+  transition:all .25s;
+}
+.soc-btn:hover{background:var(--amber-dim);border-color:var(--amber);color:var(--amber);box-shadow:0 0 15px var(--amber-glow);}
+ 
+/* ══════════════════
+   FOOTER
+══════════════════ */
+footer{
+  border-top:1px solid var(--border);
+  background:var(--panel);
+  padding:1.5rem 2.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.58rem;color:var(--muted);letter-spacing:.08em;
+  position:relative;z-index:2;
+}
+footer .ping{color:var(--green);}
+ 
+/* ══════════════════
+   SCROLL REVEAL
+══════════════════ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.1s;}
+.reveal-d2{transition-delay:.2s;}
+.reveal-d3{transition-delay:.3s;}
+.reveal-d4{transition-delay:.4s;}
+ 
+/* ══════════════════
+   MOBILE
+══════════════════ */
+@media(max-width:900px){
+  nav{padding:.8rem 1.25rem;}
+  .nav-links,.nav-status{display:none;}
+  #hero{grid-template-columns:1fr;padding:5.5rem 1.25rem 2.5rem;gap:2rem;}
+  .hero-right{display:none;}
+  h1.hero-name{font-size:4rem;}
+  #about,#contact{grid-template-columns:1fr;padding:3.5rem 1.25rem;}
+  #skills,#experience,#projects,#achievements,#certificates{padding:3.5rem 1.25rem;}
+  .skills-rack,.projects-grid{grid-template-columns:1fr;}
+  .ach-grid{grid-template-columns:1fr;}
+  .certs-grid{grid-template-columns:repeat(2,1fr);}
+  .route-table-head,.route-row{grid-template-columns:1fr 1fr;font-size:.62rem;}
+  .route-table-head .h-date,.route-row .rt-date{display:none;}
+  .sec-title{font-size:2.2rem;}
+  footer{flex-direction:column;gap:.5rem;text-align:center;padding:1.25rem;}
+}
+@media(max-width:500px){
+  .certs-grid{grid-template-columns:1fr;}
+  .hero-ping-row{gap:.75rem;}
+  .hero-btns{flex-direction:column;}
+}
+</style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
-    <nav class="fixed w-full bg-white dark:bg-gray-800 shadow-md z-50">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <a href="#home" class="text-2xl font-bold text-primary">AP</a>
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="#about" class="hover:text-primary">About</a>
-                    <a href="#skills" class="hover:text-primary">Skills</a>
-                    <a href="#experience" class="hover:text-primary">Experience</a>
-                    <a href="#projects" class="hover:text-primary">Projects</a>
-                    <a href="#achievements" class="hover:text-primary">Achievements</a>
-                    <a href="#certificates" class="hover:text-primary">Certificates</a>
-                    <a href="#resume" class="hover:text-primary">Resume</a>
-                    <a href="#contact" class="hover:text-primary">Contact</a>
-                    <button id="dark-mode-toggle" class="ml-2 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200">
-                        <i id="theme-toggle-icon" class="fas fa-moon text-gray-600 dark:text-gray-300"></i>
-                    </button>
-                </div>
-                <div class="flex items-center space-x-3 md:hidden">
-                    <button id="dark-mode-toggle-mobile" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200">
-                        <i id="theme-toggle-icon-mobile" class="fas fa-moon text-gray-600 dark:text-gray-300"></i>
-                    </button>
-                    <button id="menu-btn">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div id="mobile-menu" class="md:hidden hidden fixed inset-0 bg-black bg-opacity-50 z-50">
-            <div class="bg-white dark:bg-gray-800 w-64 h-full p-6">
-                <button id="close-menu" class="absolute top-4 right-4 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-                <nav class="mt-12">
-                    <ul class="space-y-4">
-                        <li><a href="#home" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Home</a></li>
-                        <li><a href="#about" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">About</a></li>
-                        <li><a href="#skills" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Skills</a></li>
-                        <li><a href="#experience" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Experience</a></li>
-                        <li><a href="#projects" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Projects</a></li>
-                        <li><a href="#achievements" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Achievements</a></li>
-                        <li><a href="#certificates" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Certificates</a></li>
-                        <li><a href="#resume" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Resume</a></li>
-                        <li><a href="#contact" class="block text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium">Contact</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </nav>
-
-    <section id="home" class="min-h-screen flex items-center pt-16 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
-        <div id="particles"></div>
-        <div class="container mx-auto px-4 py-16 relative z-10">
-            <div class="text-center fade-in">
-                <img src="Ashim paul image.jpeg" alt="Ashim Paul" class="profile-picture mx-auto mb-8 glow">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4">Ashim Paul</h1>
-                <div class="inline-block">
-                    <h2 class="text-xl md:text-2xl text-gray-600 mb-6 typing-text">Networking | DBMS | BMS | Web Development | Data Science</h2>
-                </div>
-                <p class="text-lg text-gray-700 max-w-3xl mx-auto mb-8">
-                    Experienced Site Engineer, CS Teacher & Full-Stack Developer with expertise in Building Management Systems (BMS), 
-                    Networking, Database Management (DBMS), and Web Development. Proven track record in system reliability, 
-                    preventive maintenance, and delivering production-ready applications.
-                </p>
-                
-                <div class="flex flex-wrap justify-center gap-4 mb-8">
-                    <a href="https://wa.me/919612963394" target="_blank" class="bg-success text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300 inline-flex items-center">
-                        <i class="fab fa-whatsapp mr-2"></i>WhatsApp
-                    </a>
-                    <a href="mailto:ashimpaul308@gmail.com" class="bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition duration-300 inline-flex items-center">
-                        <i class="fas fa-envelope mr-2"></i>Email
-                    </a>
-                </div>
-
-                <div class="flex justify-center space-x-4 mb-6">
-                    <a href="https://www.linkedin.com/in/ashim-paul-/" target="_blank" class="text-primary hover:text-blue-700">
-                        <i class="fab fa-linkedin text-3xl"></i>
-                    </a>
-                    <a href="https://github.com/Ashimpaul" target="_blank" class="text-primary hover:text-blue-700">
-                        <i class="fab fa-github text-3xl"></i>
-                    </a>
-                </div>
-                
-                <div class="text-center">
-                    <a href="Ashim_paul_resume.pdf" download class="bg-primary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-300 inline-flex items-center">
-                        <i class="fas fa-download mr-2"></i>Download Resume
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="py-20 bg-white dark:bg-gray-800">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">About Me</h2>
-            <div class="max-w-4xl mx-auto">
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold mb-4">Education</h3>
-                    <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
-                        <h4 class="text-gray-600 dark:text-gray-300 font-medium">B.Tech in Computer Science & Engineering</h4>
-                        <p class="text-gray-600 dark:text-gray-300">Nagaland University (July 2020 – June 2024)</p>
-                        <p class="text-gray-600 dark:text-gray-300">GPA: 7.48</p>
-                        <p class="text-gray-600 dark:text-gray-300 mt-2">Courses: Object Oriented Programming, Operating Systems, Data Structures and Algorithms, Machine Learning, Networking, Database Management System, Real Time System</p>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="text-xl font-semibold mb-4">Languages Known</h3>
-                    <div class="flex space-x-4">
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Hindi</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">English</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Bengali</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="skills" class="py-20 bg-gray-50 dark:bg-gray-900">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Key Skills</h2>
-            
-            <div class="mb-12">
-                <h3 class="text-2xl font-semibold text-center mb-6 text-primary">Areas of Expertise</h3>
-                <div class="grid md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md text-center border-2 border-primary">
-                        <i class="fas fa-network-wired text-3xl text-primary mb-2"></i>
-                        <h4 class="font-semibold">Networking</h4>
-                    </div>
-                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md text-center border-2 border-warning">
-                        <i class="fas fa-database text-3xl text-warning mb-2"></i>
-                        <h4 class="font-semibold">DBMS</h4>
-                    </div>
-                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md text-center border-2 border-success">
-                        <i class="fas fa-building text-3xl text-success mb-2"></i>
-                        <h4 class="font-semibold">BMS Systems</h4>
-                    </div>
-                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md text-center border-2 border-purple-600">
-                        <i class="fas fa-code text-3xl text-purple-600 mb-2"></i>
-                        <h4 class="font-semibold">Web Development</h4>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Programming</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Python</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">C</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">C++</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">JavaScript</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">PHP</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">SQL</span>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Networking & Systems</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">IP Addressing</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Subnetting</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">LAN/WAN</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Routing Basics</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Network Security</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Router/Switch Setup</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">CCTV</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">PA Systems</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">BMS Systems</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Biometric</span>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Web Development</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">HTML</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">CSS</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Bootstrap</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Tailwind</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Laravel</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">REST APIs</span>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Data Science & ML</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Pandas</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Scikit-learn</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">TensorFlow</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">NLP</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Matplotlib</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Predictive Modeling</span>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Tools & Platforms</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Git</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">VS Code</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">PowerBI</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Jupyter</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Excel</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Linux</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Windows</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Wireshark (Basics)</span>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-4">Soft Skills</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Leadership</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Event Management</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Writing</span>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded">Public Speaking</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="experience" class="py-20 bg-white dark:bg-gray-800">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Professional Experience</h2>
-            <div class="max-w-4xl mx-auto space-y-8">
-                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-success">
-                    <div class="flex flex-wrap justify-between items-start mb-2">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Site Engineer</h3>
-                        <span class="text-gray-600 dark:text-gray-400">April 1, 2026 – Present</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-2 font-medium">Honeywell Automation India Limited (Onsite)</p>
-                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
-                        <li>Perform regular site inspections to identify safety hazards, ensure compliance with standards, and monitor Building Management Systems (BMS) operations</li>
-                        <li>Developed and implemented preventive maintenance strategies, resulting in a <strong class="text-success">15% improvement in equipment reliability</strong> and a <strong class="text-success">10% reduction in downtime</strong></li>
-                    </ul>
-                </div>
-
-                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-primary">
-                    <div class="flex flex-wrap justify-between items-start mb-2">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">CS Teacher</h3>
-                        <span class="text-gray-600 dark:text-gray-400">June 22, 2025 – March 26, 2026</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-2 font-medium">KV NIT Silchar (Onsite)</p>
-                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
-                        <li>Teaching Computer Science including Networking concepts (IP addressing, protocols, OSI model) to higher secondary students</li>
-                        <li>Maintained lab infrastructure, including routers, Ethernet networks, and system connectivity</li>
-                        <li>Managed setup and monitoring of CCTV, PA systems, and campus surveillance networks</li>
-                    </ul>
-                </div>
-
-                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-purple-600">
-                    <div class="flex flex-wrap justify-between items-start mb-2">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Nagaland University Hybrid Project Intern – Naga Connect (Startup)</h3>
-                        <span class="text-gray-600 dark:text-gray-400">Oct 10, 2024 – Feb 28, 2025</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-2 font-medium">Funded by IBITF in collaboration with IIIT Guwahati</p>
-                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
-                        <li>Developed a job-matching platform using React.js and Node.js</li>
-                        <li>Contributed at the grassroots level by organizing events and seminars to drive product awareness and user adoption</li>
-                    </ul>
-                </div>
-
-                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-warning">
-                    <div class="flex flex-wrap justify-between items-start mb-2">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">PHP Developer Intern</h3>
-                        <span class="text-gray-600 dark:text-gray-400">July 8, 2024 – Oct 8, 2024</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-2 font-medium">Yellowberry Technology (Hybrid)</p>
-                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
-                        <li>Developed Laravel-based applications improving performance and user experience</li>
-                        <li>Worked with server deployment, hosting environments, and backend optimization</li>
-                    </ul>
-                </div>
-
-                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-purple-600">
-                    <div class="flex flex-wrap justify-between items-start mb-2">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Data Science Intern</h3>
-                        <span class="text-gray-600 dark:text-gray-400">Dec 2022 – Jan 2023</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-2 font-medium">Ardent Computech</p>
-                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
-                        <li>Built Walmart sales forecasting model with Scikit-learn</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="py-20 bg-gray-50 dark:bg-gray-900">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Featured Projects</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-chart-line text-3xl text-primary mr-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Walmart Sales Data Analysis</h3>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">Built ML model improving forecast accuracy by <strong class="text-primary">15%</strong> using Python and Scikit-learn; handled structured datasets and optimized data processing workflows</p>
-                    <a href="https://github.com/Ashimpaul/Walmart-Sales-Analysis-Using-Machine-Learning" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-                        <i class="fab fa-github mr-1"></i>View on GitHub
-                    </a>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-graduation-cap text-3xl text-success mr-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Smart Tutoring System</h3>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">Developed NLP-based personalized learning system; integrated edge computing concepts for low-latency responses and designed database using DBMS concepts; won <strong class="text-success">Best Paper Award (BITMDM-2024)</strong></p>
-                    <a href="https://github.com/Ashimpaul/Smart-Tutoring-System" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-                        <i class="fab fa-github mr-1"></i>View on GitHub
-                    </a>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-envelope text-3xl text-warning mr-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Email Spam Detection</h3>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">Achieved <strong class="text-warning">95% accuracy</strong> using TF-IDF and Logistic Regression; implemented efficient data flow and preprocessing pipeline</p>
-                    <a href="https://github.com/Ashimpaul/Email-spam-detection" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-                        <i class="fab fa-github mr-1"></i>View on GitHub
-                    </a>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-heartbeat text-3xl text-red-600 mr-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">AI Health Assistant</h3>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">AI/ML powered health assistant application</p>
-                    <a href="https://github.com/Ashimpaul/AI-health-Assistant" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-                        <i class="fab fa-github mr-1"></i>View on GitHub
-                    </a>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-utensils text-3xl text-orange-600 mr-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Zomato Data Analysis</h3>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">Comprehensive data analysis project</p>
-                    <a href="https://github.com/Ashimpaul/Zomato-Data-Analysis" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-                        <i class="fab fa-github mr-1"></i>View on GitHub
-                    </a>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl hover:shadow-2xl dark:hover:bg-gray-700 transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-shopping-cart text-3xl text-purple-600 mr-3"></i>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Micro Store</h3>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">Laravel E-commerce application</p>
-                    <a href="https://ashimpaul.github.io/micro-app/" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-                        <i class="fas fa-external-link-alt mr-1"></i>Live Demo
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="achievements" class="py-20 bg-white dark:bg-gray-800">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Achievements & Publications</h2>
-            <div class="max-w-4xl mx-auto space-y-6">
-                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-success">
-                    <h3 class="text-xl text-blue-600 dark:text-blue-400 mb-2"><i class="fas fa-trophy mr-2"></i>Best Paper Award at BITMDM 2024</h3>
-                    <p class="text-gray-700 dark:text-gray-300 mb-2">Awarded 'Best Paper' at the BITMDM-2024 international conference for publishing and presenting research on an AI-driven 'Intelligent Tutoring System' that leverages Natural Language Processing (NLP) for personalized learning.</p>
-                    <a href="https://www.linkedin.com/posts/ashim-paul-_bitmdm2024-activity-7271291500355829761-7LE3?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEHZS0gBpNS-nQ0fDeLVdlQz3NzWI7j-O6g" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-                        <i class="fas fa-external-link-alt mr-1"></i>View Post
-                    </a>
-                </div>
-
-                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-primary">
-                    <h3 class="text-xl text-blue-600 dark:text-blue-400 mb-2"><i class="fas fa-book mr-2"></i>Published Paper</h3>
-                    <p class="text-gray-700 dark:text-gray-300 mb-2">Recommendation System to Assist Learner: Intelligent Tutoring System</p>
-                    <a href="https://link.springer.com/chapter/10.1007/978-3-031-82706-8_24" target="_blank" class="text-primary dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
-                        <i class="fas fa-external-link-alt mr-1"></i>Springer Link
-                    </a>
-                </div>
-
-                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg border-l-4 border-purple-600">
-                    <h3 class="text-xl text-blue-600 dark:text-blue-400 mb-2"><i class="fas fa-calendar-check mr-2"></i>Event Coordinator</h3>
-                    <p class="text-gray-700 dark:text-gray-300">Led the successful organization of Techaura 2023, overseeing technical and creative events such as Code War, Code Chef, and fine arts competitions. Managed event logistics, coordinated with multiple teams, and enhanced participation engagement by 30%.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="certificates" class="py-20 bg-gray-50 dark:bg-gray-900">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Certifications</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                <a href="https://drive.google.com/file/d/1DA_2pa6w3vjApPEp1Q4XxjlDdM54lXbM/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
-                    <div class="flex items-center mb-3">
-                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
-                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Industrial Internship Certificate on Data Science and AI</h3>
-                    </div>
-                    <p class="text-gray-700 dark:text-gray-300 mb-3">Ardent Computech Pvt. Ltd.</p>
-                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
-                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
-                        </span>
-                    </div>
-                </a>
-
-                <a href="https://drive.google.com/file/d/1eIgfMuWR0_3SvR8AwJN4ynoPGrMpFksK/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
-                    <div class="flex items-center mb-3">
-                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
-                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Experience/Internship Certificate</h3>
-                    </div>
-                    <p class="text-gray-700 dark:text-gray-300 mb-3">Naga Connect</p>
-                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
-                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
-                        </span>
-                    </div>
-                </a>
-
-                <a href="https://drive.google.com/file/d/1lgC-cJ2PqTl_1zqng3xt-oa-js3-r0F9/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
-                    <div class="flex items-center mb-3">
-                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
-                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Experience/Internship Certificate</h3>
-                    </div>
-                    <p class="text-gray-700 dark:text-gray-300 mb-3">Yellow Berry Technology</p>
-                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
-                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
-                        </span>
-                    </div>
-                </a>
-
-                <a href="https://drive.google.com/file/d/1DIOri6fASw0M6cLYWdx9IcYlAEFQVjqI/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
-                    <div class="flex items-center mb-3">
-                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
-                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Full Stack Web Development</h3>
-                    </div>
-                    <p class="text-gray-700 dark:text-gray-300 mb-3">NIELIT</p>
-                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
-                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
-                        </span>
-                    </div>
-                </a>
-
-                <a href="https://drive.google.com/file/d/1DETVePERmeZqV6YKRRrwKX6rXD5lyy2M/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
-                    <div class="flex items-center mb-3">
-                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
-                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">SEBI - Investor Certification Examination</h3>
-                    </div>
-                    <p class="text-gray-700 dark:text-gray-300 mb-3">SEBI</p>
-                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
-                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
-                        </span>
-                    </div>
-                </a>
-
-                <a href="https://drive.google.com/file/d/1EpbzxoMg3a--WcmBxF-j55ydYMB5Tqm6/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
-                    <div class="flex items-center mb-3">
-                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
-                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">HP LIFE - Data Science & Analytics</h3>
-                    </div>
-                    <p class="text-gray-700 dark:text-gray-300 mb-3">HP LIFE</p>
-                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
-                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
-                        </span>
-                    </div>
-                </a>
-
-                <a href="https://drive.google.com/file/d/1Vv2Z9Of-e1FiVG_yPXGIAoADZXY_FRja/view?usp=drivesdk" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
-                    <div class="flex items-center mb-3">
-                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
-                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Tech Saksham - AI</h3>
-                    </div>
-                    <p class="text-gray-700 dark:text-gray-300 mb-3">Transformative Learning with TechSaksham & Analytics</p>
-                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
-                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
-                        </span>
-                    </div>
-                </a>
-
-                <a href="https://drive.google.com/file/d/1hA48UiBH1g1VP0bukH2EyDQP4dCr0zNe/view?usp=sharing" target="_blank" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 block">
-                    <div class="flex items-center mb-3">
-                        <i class="fas fa-certificate text-primary text-2xl mr-3"></i>
-                        <h3 class="text-xl text-gray-900 dark:text-gray-200 font-semibold">Google Data Analysis</h3>
-                    </div>
-                    <p class="text-gray-700 dark:text-gray-300 mb-3">Process Data from Dirty to Clean & Analytics</p>
-                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                        <span class="text-primary dark:text-blue-400 flex items-center font-semibold">
-                            <i class="fas fa-external-link-alt mr-2"></i> View Certificate
-                        </span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section id="resume" class="py-20 bg-white dark:bg-gray-800">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Resume</h2>
-            <div class="max-w-4xl mx-auto text-center">
-                <p class="text-gray-700 dark:text-gray-300 mb-6">Download my complete resume for detailed information</p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <a href="Ashim_paul_resume.pdf" download class="bg-primary text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-300 inline-flex items-center text-lg">
-                        <i class="fas fa-download mr-2"></i>Download Resume PDF
-                    </a>
-                    <a href="https://wa.me/919612963394" target="_blank" class="bg-success text-white px-8 py-3 rounded-lg hover:bg-green-700 transition duration-300 inline-flex items-center text-lg">
-                        <i class="fab fa-whatsapp mr-2"></i>Contact on WhatsApp
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="py-20 bg-gray-50 dark:bg-gray-900">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Get In Touch</h2>
-            
-            <div class="max-w-2xl mx-auto">
-                <h3 class="text-2xl font-semibold mb-6 text-center">Contact Information</h3>
-                <div class="space-y-6">
-                    <div class="flex items-center">
-                        <div class="bg-primary text-white p-3 rounded-full mr-4">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">Phone</p>
-                            <a href="tel:+919612963394" class="text-gray-900 dark:text-gray-100 font-medium hover:text-primary">+91-9612963394</a>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center">
-                        <div class="bg-success text-white p-3 rounded-full mr-4">
-                            <i class="fab fa-whatsapp"></i>
-                        </div>
-                        <div>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">WhatsApp</p>
-                            <a href="https://wa.me/919612963394" target="_blank" class="text-gray-900 dark:text-gray-100 font-medium hover:text-success">Chat on WhatsApp</a>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center">
-                        <div class="bg-gray-700 text-white p-3 rounded-full mr-4">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm">Email</p>
-                            <a href="mailto:ashimpaul308@gmail.com" class="text-gray-900 dark:text-gray-100 font-medium hover:text-primary">ashimpaul308@gmail.com</a>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center">
-                            <div class="bg-blue-700 text-white p-3 rounded-full mr-4">
-                                <i class="fab fa-linkedin"></i>
-                            </div>
-                            <div>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm">LinkedIn</p>
-                                <a href="https://www.linkedin.com/in/ashim-paul-/" target="_blank" class="text-gray-900 dark:text-gray-100 font-medium hover:text-blue-700">linkedin.com/in/ashim-paul-</a>
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-white dark:bg-gray-800 py-6 border-t border-gray-200 dark:border-gray-700">
-        <div class="container mx-auto px-4 text-center">
-            <div class="flex justify-center space-x-6 mb-4">
-                <a href="https://www.linkedin.com/in/ashim-paul-/" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-primary">
-                    <i class="fab fa-linkedin text-xl"></i>
-                </a>
-                <a href="https://github.com/Ashimpaul" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-primary">
-                    <i class="fab fa-github text-xl"></i>
-                </a>
-                <a href="mailto:ashimpaul308@gmail.com" class="text-gray-600 dark:text-gray-400 hover:text-primary">
-                    <i class="fas fa-envelope text-xl"></i>
-                </a>
-                <a href="https://wa.me/919612963394" target="_blank" class="text-gray-600 dark:text-gray-400 hover:text-success">
-                    <i class="fab fa-whatsapp text-xl"></i>
-                </a>
-            </div>
-            <p class="text-gray-600 dark:text-gray-400">&copy; 2026 Ashim Paul. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script>
-        const themeToggleBtn = document.getElementById('dark-mode-toggle');
-        const themeToggleIcon = document.getElementById('theme-toggle-icon');
-        const themeToggleBtnMobile = document.getElementById('dark-mode-toggle-mobile');
-        const themeToggleIconMobile = document.getElementById('theme-toggle-icon-mobile');
-        
-        function updateThemeToggle() {
-            if (document.documentElement.classList.contains('dark')) {
-                themeToggleIcon.classList.remove('fa-moon');
-                themeToggleIcon.classList.add('fa-sun');
-                themeToggleIconMobile.classList.remove('fa-moon');
-                themeToggleIconMobile.classList.add('fa-sun');
-            } else {
-                themeToggleIcon.classList.remove('fa-sun');
-                themeToggleIcon.classList.add('fa-moon');
-                themeToggleIconMobile.classList.remove('fa-sun');
-                themeToggleIconMobile.classList.add('fa-moon');
-            }
+<body>
+ 
+<!-- ELEMENTS -->
+<canvas id="pcb-canvas"></canvas>
+<div id="sprog"></div>
+<div id="cur"></div>
+<div id="cur2"></div>
+ 
+<!-- PACKET LINES -->
+<div class="packet-line" style="--y:23vh;--dur:8s;--delay:0s;"></div>
+<div class="packet-line" style="--y:47vh;--dur:12s;--delay:3s;"></div>
+<div class="packet-line" style="--y:71vh;--dur:9s;--delay:6s;"></div>
+<div class="packet-line" style="--y:88vh;--dur:14s;--delay:1.5s;"></div>
+ 
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-id">
+    <a href="#hero" class="nav-logo">AP</a>
+    <div>
+      <div class="nav-node"></div>
+      <div class="nav-ip">192.168.1.1 / NODE_ACTIVE</div>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Stack</a></li>
+    <li><a href="#experience">Routes</a></li>
+    <li><a href="#projects">Build</a></li>
+    <li><a href="#achievements">Awards</a></li>
+    <li><a href="#contact">Ping</a></li>
+  </ul>
+  <div class="nav-status">AVAILABLE · HIRE ME</div>
+</nav>
+ 
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-breadcrumb">
+      <span>ROOT</span><span class="sep">/</span>
+      <span>ENGINEERS</span><span class="sep">/</span>
+      <span class="active">ASHIM_PAUL</span>
+    </div>
+    <h1 class="hero-name">
+      <span class="filled">ASHIM</span>
+      <span class="stroke">PAUL</span>
+    </h1>
+    <div class="hero-tagline">Network · Database · Code</div>
+    <p class="hero-desc">
+      <span class="hl">Site Engineer @ Honeywell</span> — where BMS automation
+      meets software precision. I design <span class="hl-blue">network architectures</span>,
+      build <span class="hl-green">ML-powered applications</span>, and optimise
+      <span class="hl-amber">database systems</span> for production reliability.
+    </p>
+    <div class="hero-ping-row">
+      <div class="ping-stat"><span class="label">UPTIME</span>&nbsp;<span class="val">99.9</span><span class="unit">%</span></div>
+      <div class="ping-stat"><span class="label">LATENCY</span>&nbsp;<span class="val">&lt;5</span><span class="unit">ms</span></div>
+      <div class="ping-stat"><span class="label">PROJECTS</span>&nbsp;<span class="val">6</span><span class="unit">+</span></div>
+      <div class="ping-stat"><span class="label">CERTS</span>&nbsp;<span class="val">8</span></div>
+    </div>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-trace">▸ VIEW WORK</a>
+      <a href="#contact" class="btn-outline-trace">⌁ PING ME</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <canvas id="topology-canvas" width="520" height="480"></canvas>
+  </div>
+</section>
+ 
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="about-body reveal">
+    <div class="sec-chrome"><div class="line"></div><div class="label">ABOUT_NODE</div><div class="line"></div></div>
+    <h2 class="sec-title">BMS · Net<span class="dim">work</span><br>Dev<span class="dim">eloper</span></h2>
+    <p>I'm a <strong>B.Tech CSE graduate</strong> operating at the crossroads of physical infrastructure and intelligent software. At <strong>Honeywell Automation India Limited</strong>, I oversee Building Management Systems, drive a <span class="hl-green">15% improvement in equipment reliability</span>, and reduce downtime by <span class="hl-green">10%</span> through proactive engineering.</p>
+    <p>Before that — I taught <span class="hl-blue">IP addressing, OSI models, and routing protocols</span> to students at KV NIT Silchar, managed CCTV and PA networks, and contributed to a <strong>Springer-published research paper</strong> that won <span class="hl-amber">Best Paper at BITMDM-2024</span>.</p>
+    <p>Whether it's a <strong>Laravel app</strong>, a <strong>Scikit-learn forecasting model</strong>, or a campus-wide <strong>LAN topology</strong> — I build things that run reliably in production.</p>
+  </div>
+  <div class="reveal reveal-d2">
+    <div class="db-table">
+      <div class="db-table-header"><span class="icon">◈</span> TABLE: ashim_paul</div>
+      <div class="db-row"><span class="col-name">role</span><span class="col-type">VARCHAR</span><span class="col-val">'Site Engineer'</span></div>
+      <div class="db-row"><span class="col-name">company</span><span class="col-type">VARCHAR</span><span class="col-val">'Honeywell'</span></div>
+      <div class="db-row"><span class="col-name">degree</span><span class="col-type">VARCHAR</span><span class="col-val">'B.Tech CSE'</span></div>
+      <div class="db-row"><span class="col-name">gpa</span><span class="col-type">FLOAT</span><span class="col-val">7.48</span></div>
+      <div class="db-row"><span class="col-name">paper_award</span><span class="col-type">BOOL</span><span class="col-val">TRUE</span></div>
+      <div class="db-row"><span class="col-name">languages</span><span class="col-type">ARRAY</span><span class="col-val">['Hindi','English','Bengali']</span></div>
+      <div class="db-row"><span class="col-name">open_to_work</span><span class="col-type">BOOL</span><span class="col-val">TRUE</span></div>
+      <div class="db-table-footer">SELECT * FROM engineers WHERE hire_worthy = TRUE;</div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ═══ SKILLS ═══ -->
+<section id="skills">
+  <div class="reveal">
+    <div class="sec-chrome"><div class="line"></div><div class="label">SKILL_RACK</div><div class="line"></div></div>
+    <h2 class="sec-title">Tech<span class="dim">nology</span><br>Stack</h2>
+  </div>
+  <div class="skills-rack reveal reveal-d1">
+    <div class="rack-unit">
+      <div class="rack-num"><span class="rack-led led-amber"></span> U01 ── LANGUAGES</div>
+      <div class="rack-title">Programming</div>
+      <div class="skill-chips">
+        <span class="chip">Python</span><span class="chip">C</span><span class="chip">C++</span>
+        <span class="chip">JavaScript</span><span class="chip">PHP</span><span class="chip">SQL</span>
+      </div>
+    </div>
+    <div class="rack-unit">
+      <div class="rack-num"><span class="rack-led led-green"></span> U02 ── NETWORKING</div>
+      <div class="rack-title">Networks & BMS</div>
+      <div class="skill-chips">
+        <span class="chip">IP Addressing</span><span class="chip">Subnetting</span>
+        <span class="chip">LAN / WAN</span><span class="chip">Routing</span>
+        <span class="chip">Network Security</span><span class="chip">BMS</span>
+        <span class="chip">CCTV</span><span class="chip">PA Systems</span><span class="chip">Biometric</span>
+      </div>
+    </div>
+    <div class="rack-unit">
+      <div class="rack-num"><span class="rack-led led-blue"></span> U03 ── WEB</div>
+      <div class="rack-title">Web Development</div>
+      <div class="skill-chips">
+        <span class="chip">HTML/CSS</span><span class="chip">Bootstrap</span>
+        <span class="chip">Tailwind</span><span class="chip">Laravel</span>
+        <span class="chip">React.js</span><span class="chip">Node.js</span><span class="chip">REST APIs</span>
+      </div>
+    </div>
+    <div class="rack-unit">
+      <div class="rack-num"><span class="rack-led led-amber"></span> U04 ── ML/AI</div>
+      <div class="rack-title">Data Science & ML</div>
+      <div class="skill-chips">
+        <span class="chip">Pandas</span><span class="chip">Scikit-learn</span>
+        <span class="chip">TensorFlow</span><span class="chip">NLP</span>
+        <span class="chip">Matplotlib</span><span class="chip">Predictive Models</span>
+      </div>
+    </div>
+    <div class="rack-unit">
+      <div class="rack-num"><span class="rack-led led-green"></span> U05 ── TOOLS</div>
+      <div class="rack-title">Platforms & Tools</div>
+      <div class="skill-chips">
+        <span class="chip">Git</span><span class="chip">VS Code</span><span class="chip">PowerBI</span>
+        <span class="chip">Jupyter</span><span class="chip">Excel</span>
+        <span class="chip">Linux</span><span class="chip">Windows</span><span class="chip">Wireshark</span>
+      </div>
+    </div>
+    <div class="rack-unit">
+      <div class="rack-num"><span class="rack-led led-blue"></span> U06 ── SOFT</div>
+      <div class="rack-title">Soft Skills</div>
+      <div class="skill-chips">
+        <span class="chip">Leadership</span><span class="chip">Event Management</span>
+        <span class="chip">Technical Writing</span><span class="chip">Public Speaking</span>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ═══ EXPERIENCE ═══ -->
+<section id="experience">
+  <div class="reveal">
+    <div class="sec-chrome"><div class="line"></div><div class="label">ROUTING_TABLE</div><div class="line"></div></div>
+    <h2 class="sec-title">Career<span class="dim"> Routes</span></h2>
+  </div>
+  <div class="route-table reveal reveal-d1">
+    <div class="route-table-head">
+      <span>DESTINATION</span>
+      <span>VIA (RESPONSIBILITIES)</span>
+      <span>STATUS</span>
+      <span class="h-date" style="text-align:right">PERIOD</span>
+    </div>
+    <!-- ROW 1 -->
+    <div class="route-row route-current">
+      <div>
+        <div class="rt-dest">Site Engineer</div>
+        <div class="rt-sub">HONEYWELL AUTOMATION · ONSITE</div>
+        <ul class="exp-detail">
+          <li>Regular site inspections, BMS monitoring, safety compliance</li>
+          <li>Preventive maintenance → <strong>+15% equipment reliability, −10% downtime</strong></li>
+        </ul>
+      </div>
+      <div class="rt-via"><strong>BMS · Networking · Maintenance Engineering</strong></div>
+      <div class="rt-metric"><span class="badge badge-green">ACTIVE</span></div>
+      <div class="rt-date">APR 2026<br>PRESENT</div>
+    </div>
+    <!-- ROW 2 -->
+    <div class="route-row route-prev">
+      <div>
+        <div class="rt-dest">CS Teacher</div>
+        <div class="rt-sub">KV NIT SILCHAR · ONSITE</div>
+        <ul class="exp-detail">
+          <li>Taught Networking: IP addressing, OSI model, protocols</li>
+          <li>Maintained routers, Ethernet labs, CCTV, PA networks</li>
+        </ul>
+      </div>
+      <div class="rt-via"><strong>Networking · Linux · CCTV · PA Systems</strong></div>
+      <div class="rt-metric"><span class="badge badge-amber">COMPLETED</span></div>
+      <div class="rt-date">JUN 2025<br>MAR 2026</div>
+    </div>
+    <!-- ROW 3 -->
+    <div class="route-row route-prev">
+      <div>
+        <div class="rt-dest">Hybrid Project Intern</div>
+        <div class="rt-sub">NAGA CONNECT (STARTUP) · IBITF × IIIT GHY</div>
+        <ul class="exp-detail">
+          <li>Job-matching platform in React.js + Node.js</li>
+          <li>Grassroots events & seminars for user adoption</li>
+        </ul>
+      </div>
+      <div class="rt-via"><strong>React.js · Node.js · Product Strategy</strong></div>
+      <div class="rt-metric"><span class="badge badge-amber">COMPLETED</span></div>
+      <div class="rt-date">OCT 2024<br>FEB 2025</div>
+    </div>
+    <!-- ROW 4 -->
+    <div class="route-row route-old">
+      <div>
+        <div class="rt-dest">PHP Developer Intern</div>
+        <div class="rt-sub">YELLOWBERRY TECHNOLOGY · HYBRID</div>
+        <ul class="exp-detail">
+          <li>Laravel applications, backend optimisation, server deployment</li>
+        </ul>
+      </div>
+      <div class="rt-via"><strong>Laravel · PHP · Server Deployment</strong></div>
+      <div class="rt-metric"><span class="badge badge-gray">ARCHIVED</span></div>
+      <div class="rt-date">JUL 2024<br>OCT 2024</div>
+    </div>
+    <!-- ROW 5 -->
+    <div class="route-row route-old">
+      <div>
+        <div class="rt-dest">Data Science Intern</div>
+        <div class="rt-sub">ARDENT COMPUTECH</div>
+        <ul class="exp-detail">
+          <li>Walmart sales forecasting model using Scikit-learn</li>
+        </ul>
+      </div>
+      <div class="rt-via"><strong>Python · Scikit-learn · Data Analysis</strong></div>
+      <div class="rt-metric"><span class="badge badge-gray">ARCHIVED</span></div>
+      <div class="rt-date">DEC 2022<br>JAN 2023</div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ═══ PROJECTS ═══ -->
+<section id="projects">
+  <div class="reveal">
+    <div class="sec-chrome"><div class="line"></div><div class="label">PACKETS_SENT</div><div class="line"></div></div>
+    <h2 class="sec-title">Selected<span class="dim"> Builds</span></h2>
+  </div>
+  <div class="projects-grid reveal reveal-d1">
+    <div class="proj-card">
+      <div class="proj-packet"><span class="proto">TCP</span><span>SRC: ashim · DEST: github</span><span class="size">ML</span></div>
+      <div class="proj-icon">📊</div>
+      <div class="proj-title">Walmart Sales Forecasting</div>
+      <p class="proj-desc">ML model improving forecast accuracy by <strong>+15%</strong> using Python & Scikit-learn. Handled structured datasets, optimised data pipelines.</p>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">ML</span><span class="proj-tag">Pandas</span></div>
+        <a href="https://github.com/Ashimpaul/Walmart-Sales-Analysis-Using-Machine-Learning" target="_blank" class="proj-link">GIT ↗</a>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-packet"><span class="proto">HTTPS</span><span>SRC: research · DEST: springer</span><span class="size">NLP</span></div>
+      <div class="proj-icon">🎓</div>
+      <div class="proj-title">Smart Tutoring System</div>
+      <p class="proj-desc">NLP-based personalised learning with edge computing for low-latency response. Won <strong>Best Paper @ BITMDM-2024</strong>. Published on Springer.</p>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="proj-tag">NLP</span><span class="proj-tag">ML</span><span class="proj-tag">DBMS</span></div>
+        <a href="https://github.com/Ashimpaul/Smart-Tutoring-System" target="_blank" class="proj-link">GIT ↗</a>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-packet"><span class="proto">UDP</span><span>SRC: model · DEST: inbox</span><span class="size">NLP</span></div>
+      <div class="proj-icon">📧</div>
+      <div class="proj-title">Email Spam Detection</div>
+      <p class="proj-desc">TF-IDF + Logistic Regression achieving <strong>95% accuracy</strong>. Efficient preprocessing pipeline and optimised classification.</p>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">TF-IDF</span><span class="proj-tag">NLP</span></div>
+        <a href="https://github.com/Ashimpaul/Email-spam-detection" target="_blank" class="proj-link">GIT ↗</a>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-packet"><span class="proto">HTTPS</span><span>SRC: ai · DEST: patient</span><span class="size">AI</span></div>
+      <div class="proj-icon">💊</div>
+      <div class="proj-title">AI Health Assistant</div>
+      <p class="proj-desc">AI/ML powered health assistant providing intelligent medical insights and personalised recommendations.</p>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="proj-tag">AI</span><span class="proj-tag">Python</span></div>
+        <a href="https://github.com/Ashimpaul/AI-health-Assistant" target="_blank" class="proj-link">GIT ↗</a>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-packet"><span class="proto">TCP</span><span>SRC: data · DEST: insight</span><span class="size">EDA</span></div>
+      <div class="proj-icon">🍽️</div>
+      <div class="proj-title">Zomato Data Analysis</div>
+      <p class="proj-desc">Exploratory data analysis uncovering patterns in restaurant ratings, cuisine preferences, and regional dining trends.</p>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="proj-tag">Pandas</span><span class="proj-tag">EDA</span><span class="proj-tag">Viz</span></div>
+        <a href="https://github.com/Ashimpaul/Zomato-Data-Analysis" target="_blank" class="proj-link">GIT ↗</a>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-packet"><span class="proto">HTTP</span><span>SRC: browser · DEST: store</span><span class="size">WEB</span></div>
+      <div class="proj-icon">🛒</div>
+      <div class="proj-title">Micro Store</div>
+      <p class="proj-desc">Laravel e-commerce app with full product management, cart functionality, and checkout. Deployed on live server.</p>
+      <div class="proj-footer">
+        <div class="proj-tags"><span class="proj-tag">Laravel</span><span class="proj-tag">PHP</span><span class="proj-tag">MySQL</span></div>
+        <a href="https://ashimpaul.github.io/micro-app/" target="_blank" class="proj-link">LIVE ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ═══ ACHIEVEMENTS ═══ -->
+<section id="achievements">
+  <div class="reveal">
+    <div class="sec-chrome"><div class="line"></div><div class="label">ACK_RECEIVED</div><div class="line"></div></div>
+    <h2 class="sec-title">Awards &<span class="dim"> Signals</span></h2>
+  </div>
+  <div class="ach-grid reveal reveal-d1">
+    <div class="ach-card">
+      <div class="ach-badge">BITMDM-2024</div>
+      <span class="ach-emoji">🏆</span>
+      <div class="ach-title">Best Paper Award</div>
+      <p class="ach-body">Awarded 'Best Paper' at the international BITMDM-2024 conference for research on an AI-driven Intelligent Tutoring System leveraging NLP for personalised learning.</p>
+      <a href="https://www.linkedin.com/posts/ashim-paul-_bitmdm2024-activity-7271291500355829761-7LE3" target="_blank" class="ach-link">VIEW ON LINKEDIN ↗</a>
+    </div>
+    <div class="ach-card">
+      <div class="ach-badge">SPRINGER LINK</div>
+      <span class="ach-emoji">📄</span>
+      <div class="ach-title">Published Research Paper</div>
+      <p class="ach-body">Recommendation System to Assist Learner: Intelligent Tutoring System — published in Springer international proceedings.</p>
+      <a href="https://link.springer.com/chapter/10.1007/978-3-031-82706-8_24" target="_blank" class="ach-link">READ ON SPRINGER ↗</a>
+    </div>
+    <div class="ach-card">
+      <div class="ach-badge">TECHAURA 2023</div>
+      <span class="ach-emoji">🎪</span>
+      <div class="ach-title">Event Coordinator</div>
+      <p class="ach-body">Led Techaura 2023 — Code War, Code Chef, and fine arts. Managed logistics, coordinated teams, boosted participation by 30%.</p>
+    </div>
+  </div>
+</section>
+ 
+<!-- ═══ CERTIFICATES ═══ -->
+<section id="certificates">
+  <div class="reveal">
+    <div class="sec-chrome"><div class="line"></div><div class="label">SSL_CERTS</div><div class="line"></div></div>
+    <h2 class="sec-title">Validated<span class="dim"> Credentials</span></h2>
+  </div>
+  <div class="certs-grid reveal reveal-d1">
+    <a href="https://drive.google.com/file/d/1DA_2pa6w3vjApPEp1Q4XxjlDdM54lXbM/view" target="_blank" class="cert-card">
+      <div class="cert-num">CERT · 01</div>
+      <div class="cert-issuer">Ardent Computech</div>
+      <div class="cert-name">Industrial Internship — Data Science & AI</div>
+      <div class="cert-cta">VIEW ↗</div>
+    </a>
+    <a href="https://drive.google.com/file/d/1eIgfMuWR0_3SvR8AwJN4ynoPGrMpFksK/view" target="_blank" class="cert-card">
+      <div class="cert-num">CERT · 02</div>
+      <div class="cert-issuer">Naga Connect</div>
+      <div class="cert-name">Experience / Internship Certificate</div>
+      <div class="cert-cta">VIEW ↗</div>
+    </a>
+    <a href="https://drive.google.com/file/d/1lgC-cJ2PqTl_1zqng3xt-oa-js3-r0F9/view" target="_blank" class="cert-card">
+      <div class="cert-num">CERT · 03</div>
+      <div class="cert-issuer">Yellow Berry Technology</div>
+      <div class="cert-name">Experience / Internship Certificate</div>
+      <div class="cert-cta">VIEW ↗</div>
+    </a>
+    <a href="https://drive.google.com/file/d/1DIOri6fASw0M6cLYWdx9IcYlAEFQVjqI/view" target="_blank" class="cert-card">
+      <div class="cert-num">CERT · 04</div>
+      <div class="cert-issuer">NIELIT</div>
+      <div class="cert-name">Full Stack Web Development</div>
+      <div class="cert-cta">VIEW ↗</div>
+    </a>
+    <a href="https://drive.google.com/file/d/1DETVePERmeZqV6YKRRrwKX6rXD5lyy2M/view" target="_blank" class="cert-card">
+      <div class="cert-num">CERT · 05</div>
+      <div class="cert-issuer">SEBI</div>
+      <div class="cert-name">Investor Certification Examination</div>
+      <div class="cert-cta">VIEW ↗</div>
+    </a>
+    <a href="https://drive.google.com/file/d/1EpbzxoMg3a--WcmBxF-j55ydYMB5Tqm6/view" target="_blank" class="cert-card">
+      <div class="cert-num">CERT · 06</div>
+      <div class="cert-issuer">HP LIFE</div>
+      <div class="cert-name">Data Science & Analytics</div>
+      <div class="cert-cta">VIEW ↗</div>
+    </a>
+    <a href="https://drive.google.com/file/d/1Vv2Z9Of-e1FiVG_yPXGIAoADZXY_FRja/view" target="_blank" class="cert-card">
+      <div class="cert-num">CERT · 07</div>
+      <div class="cert-issuer">TechSaksham</div>
+      <div class="cert-name">Tech Saksham — Artificial Intelligence</div>
+      <div class="cert-cta">VIEW ↗</div>
+    </a>
+    <a href="https://drive.google.com/file/d/1hA48UiBH1g1VP0bukH2EyDQP4dCr0zNe/view" target="_blank" class="cert-card">
+      <div class="cert-num">CERT · 08</div>
+      <div class="cert-issuer">Google</div>
+      <div class="cert-name">Data Analysis: Process Data from Dirty to Clean</div>
+      <div class="cert-cta">VIEW ↗</div>
+    </a>
+  </div>
+</section>
+ 
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="contact-info reveal">
+    <div class="sec-chrome"><div class="line"></div><div class="label">OPEN_SOCKET</div><div class="line"></div></div>
+    <div class="traceroute">
+      <div class="tr-hop"><span class="tr-hop-num">1</span><span class="tr-hop-ms">0.3ms</span><span class="tr-hop-addr"><span class="domain">you</span> → landing on portfolio</span></div>
+      <div class="tr-hop"><span class="tr-hop-num">2</span><span class="tr-hop-ms">1.1ms</span><span class="tr-hop-addr">reviewing → experience & skills</span></div>
+      <div class="tr-hop"><span class="tr-hop-num">3</span><span class="tr-hop-ms">2.4ms</span><span class="tr-hop-addr">impressed → deciding to reach out</span></div>
+      <div class="tr-hop"><span class="tr-hop-num">4</span><span class="tr-hop-ms">3.9ms</span><span class="tr-hop-addr"><span class="domain">ashimpaul308@gmail.com</span></span></div>
+      <div class="tr-cursor-line"><span class="tr-hop-num">5</span><span class="tr-hop-ms">&gt;</span><span>waiting for SYN<span class="tr-blink"></span></span></div>
+    </div>
+    <div class="contact-links-list">
+      <a href="tel:+919612963394" class="c-link">
+        <div class="c-link-icon">📞</div>
+        <div class="c-link-info"><div class="c-link-label">Phone</div><div class="c-link-val">+91-9612963394</div></div>
+      </a>
+      <a href="mailto:ashimpaul308@gmail.com" class="c-link">
+        <div class="c-link-icon">✉️</div>
+        <div class="c-link-info"><div class="c-link-label">Email</div><div class="c-link-val">ashimpaul308@gmail.com</div></div>
+      </a>
+      <a href="https://wa.me/919612963394" target="_blank" class="c-link">
+        <div class="c-link-icon">💬</div>
+        <div class="c-link-info"><div class="c-link-label">WhatsApp</div><div class="c-link-val">Chat on WhatsApp</div></div>
+      </a>
+      <a href="https://www.linkedin.com/in/ashim-paul-/" target="_blank" class="c-link">
+        <div class="c-link-icon">🔗</div>
+        <div class="c-link-info"><div class="c-link-label">LinkedIn</div><div class="c-link-val">linkedin.com/in/ashim-paul-</div></div>
+      </a>
+    </div>
+  </div>
+  <div class="contact-right reveal reveal-d2">
+    <div class="contact-big">
+      <span class="outline">LET'S</span>
+      <span class="solid">BUILD</span>
+      <span class="outline">TOGETHER</span>
+    </div>
+    <a href="Ashim_paul_resume.pdf" download class="btn-trace">⬇ DOWNLOAD RESUME</a>
+    <div class="social-row">
+      <a href="https://github.com/Ashimpaul" target="_blank" class="soc-btn">GH</a>
+      <a href="https://www.linkedin.com/in/ashim-paul-/" target="_blank" class="soc-btn">LI</a>
+      <a href="mailto:ashimpaul308@gmail.com" class="soc-btn">@</a>
+      <a href="https://wa.me/919612963394" target="_blank" class="soc-btn">WA</a>
+    </div>
+  </div>
+</section>
+ 
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <span>© 2026 ASHIM PAUL — ALL PACKETS RESERVED</span>
+  <span class="ping">PING: 0ms · STATUS: ONLINE · BUILD: PRODUCTION</span>
+</footer>
+ 
+<!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
+<script>
+/* ── CURSOR ── */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function animC(){
+  tx+=(mx-tx)*.13;ty+=(my-ty)*.13;
+  cur2.style.left=tx+'px';cur2.style.top=ty+'px';
+  requestAnimationFrame(animC);
+})();
+ 
+/* ── SCROLL PROGRESS ── */
+window.addEventListener('scroll',()=>{
+  const p=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('sprog').style.width=p+'%';
+});
+ 
+/* ── PCB TRACE CANVAS ── */
+(function(){
+  const c=document.getElementById('pcb-canvas');
+  const ctx=c.getContext('2d');
+  function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  const NODES=[];const EDGES=[];
+  for(let i=0;i<28;i++){
+    NODES.push({
+      x:Math.random()*c.width,
+      y:Math.random()*c.height,
+      vx:(Math.random()-.5)*.25,
+      vy:(Math.random()-.5)*.25,
+      r:Math.random()*2.5+1
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    // edges
+    for(let i=0;i<NODES.length;i++){
+      for(let j=i+1;j<NODES.length;j++){
+        const dx=NODES[i].x-NODES[j].x;
+        const dy=NODES[i].y-NODES[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<200){
+          ctx.beginPath();
+          ctx.moveTo(NODES[i].x,NODES[i].y);
+          // right-angle PCB trace
+          ctx.lineTo(NODES[i].x,NODES[j].y);
+          ctx.lineTo(NODES[j].x,NODES[j].y);
+          ctx.strokeStyle=`rgba(245,166,35,${(1-d/200)*.3})`;
+          ctx.lineWidth=.6;
+          ctx.stroke();
         }
-
-        function toggleTheme() {
-            document.documentElement.classList.toggle('dark');
-            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-            updateThemeToggle();
-        }
-
-        themeToggleBtn.addEventListener('click', toggleTheme);
-        themeToggleBtnMobile.addEventListener('click', toggleTheme);
-
-        updateThemeToggle();
-
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const closeMenu = document.getElementById('close-menu');
-
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        closeMenu.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
-        });
-
-        const mobileLinks = mobileMenu.getElementsByTagName('a');
-        Array.from(mobileLinks).forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-
-        const sections = document.querySelectorAll('section');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('opacity-100', 'translate-y-0');
-                    entry.target.classList.remove('opacity-0', 'translate-y-10');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        sections.forEach(section => {
-            section.classList.add('transition', 'duration-1000', 'opacity-0', 'translate-y-10');
-            observer.observe(section);
-        });
-
-        document.getElementById("contactForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            let name = document.getElementById("name").value;
-            let email = document.getElementById("email").value;
-            let phone_number = document.getElementById("phone_number").value;
-            let message = document.getElementById("message").value;
-
-            let formData = new FormData();
-            formData.append("name", name);
-            formData.append("email", email);
-            formData.append("phone_number", phone_number);
-            formData.append("message", message);
-
-            fetch("https://formsubmit.co/ajax/ashimpaul308@gmail.com", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                let responseMessage = document.getElementById("responseMessage");
-                responseMessage.classList.remove('hidden');
-                responseMessage.textContent = "Message sent successfully!";
-                responseMessage.style.color = "green";
-                
-                document.getElementById("contactForm").reset();
-
-                setTimeout(() => {
-                    responseMessage.classList.add('hidden');
-                }, 3000);
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                let responseMessage = document.getElementById("responseMessage");
-                responseMessage.classList.remove('hidden');
-                responseMessage.textContent = "Failed to send message. Please try again.";
-                responseMessage.style.color = "red";
-            });
-        });
-
-        // Particle background
-        function createParticles() {
-            const container = document.getElementById('particles');
-            if (!container) return;
-            
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                container.appendChild(particle);
-            }
-        }
-
-        // Scroll indicator
-        function createScrollIndicator() {
-            const indicator = document.createElement('div');
-            indicator.classList.add('scroll-indicator');
-            document.body.appendChild(indicator);
-            
-            window.addEventListener('scroll', () => {
-                const scrollTop = document.documentElement.scrollTop;
-                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrollPercent = (scrollTop / scrollHeight) * 100;
-                indicator.style.width = scrollPercent + '%';
-            });
-        }
-
-        // Smooth scroll reveal
-        function revealOnScroll() {
-            const reveals = document.querySelectorAll('section');
-            reveals.forEach((element, index) => {
-                element.style.transitionDelay = (index * 0.1) + 's';
-            });
-        }
-
-        // Initialize all animations
-        document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            createScrollIndicator();
-            revealOnScroll();
-        });
-    </script>
+      }
+    }
+    // nodes
+    NODES.forEach(n=>{
+      ctx.beginPath();
+      ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(245,166,35,0.5)';
+      ctx.fill();
+      // update
+      n.x+=n.vx;n.y+=n.vy;
+      if(n.x<0||n.x>c.width)n.vx*=-1;
+      if(n.y<0||n.y>c.height)n.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+ 
+/* ── TOPOLOGY CANVAS (HERO) ── */
+(function(){
+  const c=document.getElementById('topology-canvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  const W=c.width,H=c.height;
+  const nodes=[
+    {id:'AP',x:260,y:240,label:'ASHIM PAUL',color:'#F5A623',main:true,r:18},
+    {id:'NET',x:100,y:100,label:'NETWORKING',color:'#38BDF8',r:12},
+    {id:'DB',x:420,y:100,label:'DATABASE',color:'#3DFF6E',r:12},
+    {id:'WEB',x:430,y:380,label:'WEB DEV',color:'#F5A623',r:12},
+    {id:'ML',x:90,y:380,label:'ML / AI',color:'#FF4560',r:12},
+    {id:'BMS',x:260,y:80,label:'BMS',color:'#38BDF8',r:10},
+    {id:'HON',x:460,y:240,label:'HONEYWELL',color:'#3DFF6E',r:9},
+    {id:'PUB',x:60,y:240,label:'SPRINGER',color:'#F5A623',r:9},
+  ];
+  const edges=[
+    ['AP','NET'],['AP','DB'],['AP','WEB'],['AP','ML'],
+    ['AP','BMS'],['AP','HON'],['AP','PUB'],
+    ['NET','BMS'],['DB','WEB'],['ML','DB'],
+  ];
+  // packet animation
+  let packets=[];
+  function spawnPacket(){
+    const e=edges[Math.floor(Math.random()*edges.length)];
+    const src=nodes.find(n=>n.id===e[0]);
+    const dst=nodes.find(n=>n.id===e[1]);
+    packets.push({sx:src.x,sy:src.y,ex:dst.x,ey:dst.y,t:0,speed:.008+Math.random()*.012});
+    if(Math.random()>.5)packets.push({sx:dst.x,sy:dst.y,ex:src.x,ey:src.y,t:0,speed:.008+Math.random()*.012});
+  }
+  setInterval(spawnPacket,600);
+  let hovered=null;
+  c.addEventListener('mousemove',e=>{
+    const rect=c.getBoundingClientRect();
+    const mx=e.clientX-rect.left,my=e.clientY-rect.top;
+    hovered=nodes.find(n=>Math.hypot(n.x-mx,n.y-my)<n.r+6)||null;
+    c.style.cursor=hovered?'pointer':'default';
+  });
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // grid
+    ctx.strokeStyle='rgba(245,166,35,0.04)';
+    ctx.lineWidth=1;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    // edges
+    edges.forEach(([a,b])=>{
+      const s=nodes.find(n=>n.id===a),d=nodes.find(n=>n.id===b);
+      ctx.beginPath();
+      ctx.moveTo(s.x,s.y);
+      ctx.lineTo(s.x,d.y);ctx.lineTo(d.x,d.y);
+      ctx.strokeStyle='rgba(245,166,35,0.22)';
+      ctx.lineWidth=1;ctx.setLineDash([4,4]);
+      ctx.stroke();ctx.setLineDash([]);
+    });
+    // packets
+    packets=packets.filter(p=>{
+      p.t+=p.speed;
+      if(p.t>1)return false;
+      const x=p.sx+(p.ex-p.sx)*p.t;
+      const y=p.sy+(p.ey-p.sy)*p.t;
+      ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);
+      ctx.fillStyle='#F5A623';
+      ctx.shadowColor='#F5A623';ctx.shadowBlur=8;
+      ctx.fill();ctx.shadowBlur=0;
+      return true;
+    });
+    // nodes
+    nodes.forEach(n=>{
+      const isHov=hovered&&hovered.id===n.id;
+      // outer ring
+      if(n.main||isHov){
+        ctx.beginPath();ctx.arc(n.x,n.y,n.r+8,0,Math.PI*2);
+        ctx.strokeStyle=n.color+'55';ctx.lineWidth=1;
+        ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);
+      }
+      // circle
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle=n.main?n.color:n.color+'33';
+      ctx.strokeStyle=n.color;ctx.lineWidth=1.5;
+      if(isHov){ctx.shadowColor=n.color;ctx.shadowBlur=20;}
+      ctx.fill();ctx.stroke();ctx.shadowBlur=0;
+      // label
+      ctx.font=`${n.main?'bold ':''} ${n.main?9:7}px JetBrains Mono, monospace`;
+      ctx.fillStyle=n.main?'#0C0E0F':n.color;
+      ctx.textAlign='center';
+      if(n.main){
+        ctx.fillText(n.label,n.x,n.y+3);
+      } else {
+        ctx.fillStyle=n.color;
+        ctx.fillText(n.label,n.x,n.y+n.r+12);
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+ 
+/* ── COUNTER ANIMATION ── */
+function counter(el,t){
+  let s=0,start=null;
+  const dur=1400;
+  function step(ts){
+    if(!start)start=ts;
+    const p=Math.min((ts-start)/dur,1);
+    el.textContent=Math.floor(p*t)+(el.dataset.suffix||'');
+    if(p<1)requestAnimationFrame(step);else el.textContent=t+(el.dataset.suffix||'');
+  }
+  requestAnimationFrame(step);
+}
+ 
+/* ── SCROLL REVEAL ── */
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting)e.target.classList.add('vis');
+  });
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+ 
+/* ── NAV LOGO click ── */
+document.querySelector('.nav-logo').addEventListener('click',e=>{
+  e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});
+});
+</script>
 </body>
 </html>
